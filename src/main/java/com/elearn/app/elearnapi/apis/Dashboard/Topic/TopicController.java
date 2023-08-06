@@ -1,4 +1,4 @@
-package com.elearn.app.elearnapi.apis.Topic;
+package com.elearn.app.elearnapi.apis.Dashboard.Topic;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("topics")
+@RequestMapping("/dashboard/topics")
 public class TopicController {
 
     @Autowired
@@ -39,8 +39,14 @@ public class TopicController {
         return topic;
     }
 
+    @PutMapping("/{id}")
+    public Topic update(@PathVariable String id, @RequestBody CreateTopicBody body) {
+        Topic topic = this.topicService.update(id, body.getTitle(), body.getDescription());
+        return topic;
+    }
+
     @DeleteMapping("/{id}")
-    public Topic update(@PathVariable String id) {
+    public Topic delete(@PathVariable String id) {
         Topic topic = this.topicService.delete(id);
         return topic;
     }

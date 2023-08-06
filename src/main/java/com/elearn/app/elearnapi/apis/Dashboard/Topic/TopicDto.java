@@ -1,4 +1,4 @@
-package com.elearn.app.elearnapi.apis.Topic;
+package com.elearn.app.elearnapi.apis.Dashboard.Topic;
 
 class CreateTopicBody {
     private String title;
