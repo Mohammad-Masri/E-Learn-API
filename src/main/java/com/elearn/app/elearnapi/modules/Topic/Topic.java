@@ -1,9 +1,18 @@
 package com.elearn.app.elearnapi.modules.Topic;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Topic {
+
+    @Id
     private String id;
     private String title;
     private String description;
+
+    public Topic() {
+    }
 
     public Topic(
             String id,

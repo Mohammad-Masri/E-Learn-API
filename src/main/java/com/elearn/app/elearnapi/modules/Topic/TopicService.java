@@ -1,29 +1,29 @@
 package com.elearn.app.elearnapi.modules.Topic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.elearn.app.elearnapi.errors.HTTPServerError;
-import com.elearn.app.elearnapi.utilities.ArrayUtilities;
 import com.elearn.app.elearnapi.utilities.StringUtilities;
 
 @Service
 public class TopicService {
-    List<Topic> topics = new ArrayList<Topic>(Arrays.asList(
-            new Topic("java", "Java", "Java programming language"),
-            new Topic("spring-boot", "Spring Boot", "Spring boot framework"),
-            new Topic("javascript", "Javascript", "Javascript scripting language")));
+
+    @Autowired
+    private TopicRepository topicRepository;
 
     public List<Topic> getAll() {
-        return this.topics;
+        List<Topic> topics = new ArrayList<>();
+        this.topicRepository.findAll().forEach(topics::add);
+        return topics;
     }
 
     public Topic getOneById(String id) {
-        Topic topic = ArrayUtilities.findOne(this.topics, "getId", id);
+        Topic topic = this.topicRepository.findById(id).orElse(null);
         return topic;
     }
 
@@ -42,30 +42,23 @@ public class TopicService {
             throw new HTTPServerError(HttpStatus.BAD_REQUEST, String.format("topic with id %s is already found", id));
         }
         Topic topic = new Topic(id, title, description);
-        this.topics.add(topic);
+        topic = this.topicRepository.save(topic);
         return topic;
     }
 
     public Topic update(String id, String title, String description) {
         Topic topic = this.checkGetOneById(id);
-
-        int index = this.topics.indexOf(topic);
-
         topic.setTitle(title);
         topic.setDescription(description);
 
-        this.topics.set(index, topic);
+        topic = this.topicRepository.save(topic);
 
         return topic;
     }
 
     public Topic delete(String id) {
         Topic topic = this.checkGetOneById(id);
-
-        int index = this.topics.indexOf(topic);
-
-        this.topics.remove(index);
-
+        this.topicRepository.delete(topic);
         return topic;
     }
 }
