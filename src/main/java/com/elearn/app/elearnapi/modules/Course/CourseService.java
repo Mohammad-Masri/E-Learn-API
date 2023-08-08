@@ -40,6 +40,11 @@ public class CourseService {
         return course;
     }
 
+    public List<Course> getAllInTopic(String topicId) {
+        List<Course> courses = this.courseRepository.findByTopics_Id(topicId);
+        return courses;
+    }
+
     public Course create(String title, String description, String[] topicIds) {
         Set<Topic> topics = this.topicService.getAllByIds(topicIds);
         Course course = new Course(title, description, topics);

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.elearn.app.elearnapi.modules.Course.Course;
+import com.elearn.app.elearnapi.modules.Course.CourseService;
 import com.elearn.app.elearnapi.modules.Topic.Topic;
 import com.elearn.app.elearnapi.modules.Topic.TopicService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,9 @@ public class TopicController {
     @Autowired
     private TopicService topicService;
 
+    @Autowired
+    private CourseService courseService;
+
     @GetMapping
     public List<Topic> getAllTopics() {
         return this.topicService.getAll();
@@ -31,6 +36,13 @@ public class TopicController {
     public Topic getTopicDetails(@PathVariable String id) {
         Topic topic = this.topicService.checkGetOneById(id);
         return topic;
+    }
+
+    @GetMapping("/{id}/courses")
+    public List<Course> getCoursesInTopic(@PathVariable String id) {
+        Topic topic = this.topicService.checkGetOneById(id);
+        List<Course> courses = this.courseService.getAllInTopic(topic.getId());
+        return courses;
     }
 
     @PostMapping
