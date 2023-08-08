@@ -23,18 +23,18 @@ public class CourseController {
     private CourseService courseService;
 
     @GetMapping
-    public List<Course> getAllTopics() {
+    public List<Course> getAllCourses() {
         return this.courseService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Course getTopicDetails(@PathVariable String id) {
+    public Course getCrouseDetails(@PathVariable String id) {
         Course topic = this.courseService.checkGetOneById(id);
         return topic;
     }
 
     @PostMapping
-    public Course createNewTopic(@RequestBody CreateCourseBody body) {
+    public Course createNewCourse(@RequestBody CreateCourseBody body) {
         Course topic = this.courseService.create(body.getTitle(), body.getDescription());
         return topic;
     }
