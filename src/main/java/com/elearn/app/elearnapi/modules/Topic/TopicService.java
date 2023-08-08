@@ -67,6 +67,12 @@ public class TopicService {
 
     public Topic delete(String id) {
         Topic topic = this.checkGetOneById(id);
+
+        // Remove the topic from associated courses
+        topic.getCourses().forEach(course -> course.getTopics().remove(topic));
+        // Clear the association from the topic side
+        topic.getCourses().clear();
+
         this.topicRepository.delete(topic);
         return topic;
     }

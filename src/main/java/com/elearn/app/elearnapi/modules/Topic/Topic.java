@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.elearn.app.elearnapi.modules.Course.Course;
 import com.elearn.app.elearnapi.utilities.JsonUtilities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -19,7 +20,7 @@ public class Topic {
     private String description;
 
     @ManyToMany(mappedBy = "topics")
-    private Set<Course> courses = new HashSet<>();
+    private Set<Course> courses;
 
     public Topic() {
     }
@@ -31,6 +32,7 @@ public class Topic {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.courses = new HashSet<>();
     }
 
     public String getId() {
@@ -55,6 +57,11 @@ public class Topic {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @JsonIgnore
+    public Set<Course> getCourses() {
+        return courses;
     }
 
     @Override
