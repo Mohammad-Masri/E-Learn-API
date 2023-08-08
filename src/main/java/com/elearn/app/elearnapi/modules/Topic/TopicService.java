@@ -1,7 +1,10 @@
 package com.elearn.app.elearnapi.modules.Topic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +28,12 @@ public class TopicService {
     public Topic getOneById(String id) {
         Topic topic = this.topicRepository.findById(id).orElse(null);
         return topic;
+    }
+
+    public Set<Topic> getAllByIds(String[] ids) {
+        Set<Topic> topics = new HashSet<>();
+        this.topicRepository.findAllById(Arrays.asList(ids)).forEach(topics::add);
+        return topics;
     }
 
     public Topic checkGetOneById(String id) {

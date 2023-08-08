@@ -1,9 +1,17 @@
 package com.elearn.app.elearnapi.modules.Course;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.elearn.app.elearnapi.modules.Topic.Topic;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Course {
@@ -14,14 +22,20 @@ public class Course {
     private String title;
     private String description;
 
+    @ManyToMany
+    @JoinTable(name = "course_topic", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "topic_id"))
+    private Set<Topic> topics = new HashSet<>();
+
     public Course() {
     }
 
     public Course(
             String title,
-            String description) {
+            String description,
+            Set<Topic> topics) {
         this.title = title;
         this.description = description;
+        this.topics = topics;
     }
 
     public Long getId() {
@@ -46,6 +60,10 @@ public class Course {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Topic> getTopics() {
+        return topics;
     }
 
     @Override

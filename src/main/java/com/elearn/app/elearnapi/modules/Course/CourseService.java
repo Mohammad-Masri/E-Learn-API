@@ -2,18 +2,24 @@ package com.elearn.app.elearnapi.modules.Course;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.elearn.app.elearnapi.errors.HTTPServerError;
+import com.elearn.app.elearnapi.modules.Topic.Topic;
+import com.elearn.app.elearnapi.modules.Topic.TopicService;
 
 @Service
 public class CourseService {
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private TopicService topicService;
 
     public List<Course> getAll() {
         List<Course> courses = new ArrayList<>();
@@ -34,8 +40,9 @@ public class CourseService {
         return course;
     }
 
-    public Course create(String title, String description) {
-        Course course = new Course(title, description);
+    public Course create(String title, String description, String[] topicIds) {
+        Set<Topic> topics = this.topicService.getAllByIds(topicIds);
+        Course course = new Course(title, description, topics);
         course = this.courseRepository.save(course);
         return course;
     }

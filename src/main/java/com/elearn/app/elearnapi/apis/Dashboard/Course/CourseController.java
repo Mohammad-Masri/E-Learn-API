@@ -35,7 +35,7 @@ public class CourseController {
 
     @PostMapping
     public Course createNewCourse(@RequestBody CreateCourseBody body) {
-        Course topic = this.courseService.create(body.getTitle(), body.getDescription());
+        Course topic = this.courseService.create(body.getTitle(), body.getDescription(), body.getTopicIds());
         return topic;
     }
 

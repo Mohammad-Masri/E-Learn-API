@@ -1,7 +1,14 @@
 package com.elearn.app.elearnapi.modules.Topic;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.elearn.app.elearnapi.modules.Course.Course;
+import com.elearn.app.elearnapi.utilities.JsonUtilities;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Topic {
@@ -10,6 +17,9 @@ public class Topic {
     private String id;
     private String title;
     private String description;
+
+    @ManyToMany(mappedBy = "topics")
+    private Set<Course> courses = new HashSet<>();
 
     public Topic() {
     }
@@ -49,6 +59,6 @@ public class Topic {
 
     @Override
     public String toString() {
-        return "id: " + this.id + ", title: " + this.title;
+        return JsonUtilities.convertToJson(this);
     }
 }
