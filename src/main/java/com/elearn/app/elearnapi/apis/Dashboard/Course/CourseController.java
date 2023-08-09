@@ -41,7 +41,7 @@ public class CourseController {
 
     @PutMapping("/{id}")
     public Course update(@PathVariable String id, @RequestBody CreateCourseBody body) {
-        Course topic = this.courseService.update(id, body.getTitle(), body.getDescription());
+        Course topic = this.courseService.update(id, body.getTitle(), body.getDescription(), body.getTopicIds());
         return topic;
     }
 

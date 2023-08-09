@@ -57,10 +57,12 @@ public class CourseService {
         return course;
     }
 
-    public Course update(String id, String title, String description) {
+    public Course update(String id, String title, String description, String[] topicIds) {
         Course course = this.checkGetOneById(id);
+        Set<Topic> topics = this.topicService.getAllByIds(topicIds);
         course.setTitle(title);
         course.setDescription(description);
+        course.setTopics(topics);
 
         course = this.courseRepository.save(course);
 
