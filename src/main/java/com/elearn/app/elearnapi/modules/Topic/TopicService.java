@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.elearn.app.elearnapi.errors.HTTPServerError;
+import com.elearn.app.elearnapi.modules.CourseTopic.CourseTopicService;
 import com.elearn.app.elearnapi.utilities.StringUtilities;
 
 @Service
@@ -18,6 +19,8 @@ public class TopicService {
 
     @Autowired
     private TopicRepository topicRepository;
+    @Autowired
+    private CourseTopicService courseTopicService;
 
     public List<Topic> getAll() {
         List<Topic> topics = new ArrayList<>();
@@ -68,10 +71,7 @@ public class TopicService {
     public Topic delete(String id) {
         Topic topic = this.checkGetOneById(id);
 
-        // Remove the topic from associated courses
-        topic.getCourses().forEach(course -> course.getTopics().remove(topic));
-        // Clear the association from the topic side
-        topic.getCourses().clear();
+        this.courseTopicService.deleteRelatedCourseTopicForThisTopic(topic);
 
         this.topicRepository.delete(topic);
         return topic;
