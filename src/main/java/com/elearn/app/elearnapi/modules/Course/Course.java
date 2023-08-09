@@ -66,6 +66,10 @@ public class Course {
         return topics;
     }
 
+    public void setTopics(Set<Topic> topics) {
+        this.topics = topics;
+    }
+
     @Override
     public String toString() {
         return "id: " + this.id + ", title: " + this.title;

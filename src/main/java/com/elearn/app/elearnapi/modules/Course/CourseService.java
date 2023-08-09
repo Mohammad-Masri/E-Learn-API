@@ -1,6 +1,7 @@
 package com.elearn.app.elearnapi.modules.Course;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.elearn.app.elearnapi.errors.HTTPServerError;
+import com.elearn.app.elearnapi.modules.CourseTopic.CourseTopicService;
 import com.elearn.app.elearnapi.modules.Topic.Topic;
 import com.elearn.app.elearnapi.modules.Topic.TopicService;
 
@@ -17,6 +19,9 @@ public class CourseService {
 
     @Autowired
     private CourseRepository courseRepository;
+
+    @Autowired
+    private CourseTopicService courseTopicService;
 
     @Autowired
     private TopicService topicService;
@@ -64,7 +69,13 @@ public class CourseService {
 
     public Course delete(String id) {
         Course course = this.checkGetOneById(id);
+        this.courseTopicService.deleteRelatedCourseTopicForThisCourse(course);
+
+        // empty the topics array so spring can serialize the JSON object
+        course.setTopics(new HashSet<>());
+
         this.courseRepository.delete(course);
+
         return course;
     }
 }

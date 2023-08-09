@@ -10,4 +10,8 @@ public interface CourseTopicRepository extends CrudRepository<CourseTopic, Strin
     @Query(value = "DELETE FROM course_topic WHERE topic_id = ?1", nativeQuery = true)
     void deleteAllByTopicId(String topicId);
 
+    @Modifying
+    @Query(value = "DELETE FROM course_topic WHERE course_id = ?1", nativeQuery = true)
+    void deleteAllByCourseId(Long courseId);
+
 }
