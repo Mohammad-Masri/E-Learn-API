@@ -29,7 +29,6 @@ public class User {
     }
 
     public User(
-            String id,
             String name,
             String email,
             String password,
@@ -75,6 +74,11 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "id: " + this.id + ", name: " + this.name + ", email: " + this.email;
     }
 
 }
