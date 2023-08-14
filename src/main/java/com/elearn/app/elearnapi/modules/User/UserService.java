@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import com.elearn.app.elearnapi.config.UserRole;
 import com.elearn.app.elearnapi.errors.HTTPServerError;
 import com.elearn.app.elearnapi.modules.User.DTO.AdminUserResponse;
+import com.elearn.app.elearnapi.modules.User.DTO.LoginResponse;
 import com.elearn.app.elearnapi.modules.User.DTO.StudentUserResponse;
 import com.elearn.app.elearnapi.modules.User.DTO.UserResponse;
+import com.elearn.app.elearnapi.utilities.JWTUtilities;
 import com.elearn.app.elearnapi.utilities.PasswordUtilities;
 import com.elearn.app.elearnapi.utilities.StringUtilities;
 
@@ -88,6 +90,15 @@ public class UserService {
 
         }
         return null;
+    }
+
+    public LoginResponse makeLoginResponse(User user) {
+
+        String token = JWTUtilities.generateJwtToken(user);
+
+        UserResponse userResponse = this.makeUserResponse(user);
+
+        return new LoginResponse(userResponse, token);
     }
 
 }

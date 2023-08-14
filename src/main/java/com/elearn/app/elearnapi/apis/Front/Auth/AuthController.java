@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.elearn.app.elearnapi.modules.User.User;
 import com.elearn.app.elearnapi.modules.User.UserService;
+import com.elearn.app.elearnapi.modules.User.DTO.LoginResponse;
 import com.elearn.app.elearnapi.modules.User.DTO.UserResponse;
 
 @RestController
@@ -25,11 +26,11 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public UserResponse login(@RequestBody LoginBody body) {
+    public LoginResponse login(@RequestBody LoginBody body) {
         User user = this.userService.checkFindByEmail(body.getEmail());
         this.userService.checkPasswordIsCorrect(user, body.getPassword());
-        UserResponse userResponse = this.userService.makeUserResponse(user);
-        return userResponse;
+        LoginResponse loginResponse = this.userService.makeLoginResponse(user);
+        return loginResponse;
 
     }
 
