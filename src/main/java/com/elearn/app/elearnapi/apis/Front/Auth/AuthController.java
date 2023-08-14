@@ -21,4 +21,13 @@ public class AuthController {
         return this.userService.createStudentUser(body.getName(), body.getEmail(), body.getPassword());
     }
 
+    @PostMapping("/login")
+    public boolean login(@RequestBody LoginBody body) {
+        User user = this.userService.checkFindByEmail(body.getEmail());
+
+        this.userService.checkPasswordIsCorrect(user, body.getPassword());
+
+        return true;
+    }
+
 }

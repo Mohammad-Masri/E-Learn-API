@@ -30,6 +30,23 @@ public class UserService {
         return user;
     }
 
+    public User checkFindByEmail(String email) {
+        User user = this.findByEmail(email);
+        if (user == null) {
+            throw new HTTPServerError(HttpStatus.NOT_FOUND,
+                    String.format("there is no user registered with this email ( %s )", email));
+        }
+        return user;
+    }
+
+    public void checkPasswordIsCorrect(User user, String password) {
+        boolean isCorrect = PasswordUtilities.isPasswordCorrect(password, user.getPassword());
+        if (!isCorrect) {
+            throw new HTTPServerError(HttpStatus.BAD_REQUEST,
+                    String.format("Password is not correct"));
+        }
+    }
+
     private User createUser(
             String name,
             String email,
