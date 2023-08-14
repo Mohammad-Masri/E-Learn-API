@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 
 import com.elearn.app.elearnapi.config.UserRole;
 import com.elearn.app.elearnapi.errors.HTTPServerError;
+import com.elearn.app.elearnapi.modules.User.DTO.AdminUserResponse;
+import com.elearn.app.elearnapi.modules.User.DTO.StudentUserResponse;
+import com.elearn.app.elearnapi.modules.User.DTO.UserResponse;
 import com.elearn.app.elearnapi.utilities.PasswordUtilities;
 import com.elearn.app.elearnapi.utilities.StringUtilities;
 
@@ -67,6 +70,24 @@ public class UserService {
             String password) {
         User user = this.createUser(name, email, password, UserRole.STUDENT);
         return user;
+    }
+
+    public StudentUserResponse makeStudentUserResponse(User user) {
+        return new StudentUserResponse(user);
+    }
+
+    public AdminUserResponse makeAdminUserResponse(User user) {
+        return new AdminUserResponse(user);
+    }
+
+    public UserResponse makeUserResponse(User user) {
+        if (user.getRole() == UserRole.STUDENT) {
+            return this.makeStudentUserResponse(user);
+        } else if (user.getRole() == UserRole.ADMIN) {
+            return this.makeAdminUserResponse(user);
+
+        }
+        return null;
     }
 
 }
