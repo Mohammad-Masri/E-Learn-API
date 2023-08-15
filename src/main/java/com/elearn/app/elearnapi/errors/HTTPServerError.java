@@ -3,22 +3,18 @@ package com.elearn.app.elearnapi.errors;
 import org.springframework.http.HttpStatus;
 
 public class HTTPServerError extends RuntimeException {
-    private String message;
     private int statusCode;
 
     public HTTPServerError(HttpStatus statusCode, String message) {
-        super();
+        super(message);
         this.statusCode = statusCode.value();
-
-        this.message = message;
     }
 
-    public String getMessage() {
-        return message;
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
     }
 
     public int getStatusCode() {
         return statusCode;
     }
-
 }
