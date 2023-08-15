@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.elearn.app.elearnapi.config.UserRole;
+import com.elearn.app.elearnapi.config.constants.UserRole;
 import com.elearn.app.elearnapi.errors.HTTPServerError;
 import com.elearn.app.elearnapi.modules.User.DTO.AdminUserResponse;
 import com.elearn.app.elearnapi.modules.User.DTO.LoginResponse;

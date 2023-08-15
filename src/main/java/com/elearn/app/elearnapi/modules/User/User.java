@@ -1,6 +1,6 @@
 package com.elearn.app.elearnapi.modules.User;
 
-import com.elearn.app.elearnapi.config.UserRole;
+import com.elearn.app.elearnapi.config.constants.UserRole;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,6 +1,6 @@
 package com.elearn.app.elearnapi.modules.User.DTO;
 
-import com.elearn.app.elearnapi.config.UserRole;
+import com.elearn.app.elearnapi.config.constants.UserRole;
 import com.elearn.app.elearnapi.modules.User.User;
 
 public class UserResponse {
