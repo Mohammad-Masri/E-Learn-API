@@ -31,4 +31,15 @@ public class FilterRegistration {
         return registrationBean;
     }
 
+    @Bean
+    public FilterRegistrationBean<IsAdminFilter> isAdminFilter() {
+        FilterRegistrationBean<IsAdminFilter> registrationBean = new FilterRegistrationBean<>();
+
+        registrationBean.setFilter(new IsAdminFilter());
+        registrationBean.setUrlPatterns(Arrays.asList("*"));
+        registrationBean.setOrder(3);
+
+        return registrationBean;
+    }
+
 }

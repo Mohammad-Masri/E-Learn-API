@@ -1,6 +1,8 @@
 package com.elearn.app.elearnapi.utilities;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -38,10 +40,16 @@ public class JWTUtilities {
     }
 
     public static String generateJwtToken(User user) {
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", user.getId());
+        claims.put("role", user.getRole());
+
         Date expirationDate = new Date(System.currentTimeMillis() + getExpirationTime());
 
         return Jwts.builder()
-                .setSubject(user.getId())
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS256, getSecretKey())
                 .compact();

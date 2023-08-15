@@ -9,6 +9,7 @@ import com.elearn.app.elearnapi.errors.HTTPServerError;
 import com.elearn.app.elearnapi.utilities.JWTUtilities;
 import com.elearn.app.elearnapi.utilities.JsonUtilities;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -61,6 +62,11 @@ public class JWTFilter extends OncePerRequestFilter {
                 }
 
             }
+
+            Claims claims = JWTUtilities.getClaimsFromToken(JWTToken);
+
+            request.setAttribute("id", claims.get("id"));
+            request.setAttribute("role", claims.get("role"));
 
             chain.doFilter(request, response);
         }
