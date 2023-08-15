@@ -10,12 +10,23 @@ import org.springframework.context.annotation.Configuration;
 public class FilterRegistration {
 
     @Bean
-    public FilterRegistrationBean<TransactionFilter> loggingFilter() {
+    public FilterRegistrationBean<TransactionFilter> transactionFilter() {
         FilterRegistrationBean<TransactionFilter> registrationBean = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new TransactionFilter());
         registrationBean.setUrlPatterns(Arrays.asList("*"));
         registrationBean.setOrder(1);
+
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<JWTFilter> jwtFilter() {
+        FilterRegistrationBean<JWTFilter> registrationBean = new FilterRegistrationBean<>();
+
+        registrationBean.setFilter(new JWTFilter());
+        registrationBean.setUrlPatterns(Arrays.asList("*"));
+        registrationBean.setOrder(2);
 
         return registrationBean;
     }
