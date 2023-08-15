@@ -7,8 +7,11 @@ import org.springframework.stereotype.Component;
 
 import com.elearn.app.elearnapi.modules.User.User;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class JWTUtilities {
@@ -42,5 +45,36 @@ public class JWTUtilities {
                 .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS256, getSecretKey())
                 .compact();
+    }
+
+    public static boolean isTokenValid(String JWTToken) {
+        if (JWTToken == null)
+            return false;
+
+        try {
+            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(JWTToken);
+            return !claimsJws.getBody().getExpiration().before(new Date());
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static Claims getClaimsFromToken(String JWTToken) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(JWTToken)
+                .getBody();
+
+        return claims;
+    }
+
+    public static String getJWTFromRequest(HttpServletRequest request) {
+        final String authorizationHeader = request.getHeader("Authorization");
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7);
+        }
+
+        return null;
     }
 }
