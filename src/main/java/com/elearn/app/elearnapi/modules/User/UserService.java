@@ -12,7 +12,6 @@ import com.elearn.app.elearnapi.modules.User.DTO.StudentUserResponse;
 import com.elearn.app.elearnapi.modules.User.DTO.UserResponse;
 import com.elearn.app.elearnapi.utilities.JWTUtilities;
 import com.elearn.app.elearnapi.utilities.PasswordUtilities;
-import com.elearn.app.elearnapi.utilities.PrintUtilities;
 import com.elearn.app.elearnapi.utilities.StringUtilities;
 
 @Service

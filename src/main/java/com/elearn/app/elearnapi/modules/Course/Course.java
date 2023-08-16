@@ -87,6 +87,14 @@ public class Course {
         this.isPublished = isPublished;
     }
 
+    public List<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(List<Lesson> lessons) {
+        this.lessons = lessons;
+    }
+
     @Override
     public String toString() {
         return "id: " + this.id + ", title: " + this.title;
