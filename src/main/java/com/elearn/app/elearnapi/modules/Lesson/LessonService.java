@@ -1,5 +1,6 @@
 package com.elearn.app.elearnapi.modules.Lesson;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,7 +13,6 @@ import com.elearn.app.elearnapi.errors.HTTPServerError;
 import com.elearn.app.elearnapi.modules.Course.Course;
 import com.elearn.app.elearnapi.modules.Course.CourseService;
 import com.elearn.app.elearnapi.utilities.ArrayUtilities;
-import com.elearn.app.elearnapi.utilities.PrintUtilities;
 
 @Service
 public class LessonService {
@@ -57,6 +57,12 @@ public class LessonService {
         int number = lessons.size() + 1;
         Lesson lesson = new Lesson(number, title, description, URL, course);
         lesson = this.lessonRepository.save(lesson);
+        return lesson;
+    }
+
+    public Lesson delete(String id, Course course) {
+        Lesson lesson = this.checkGetOneByIdInCourse(id, course);
+        this.lessonRepository.delete(lesson);
         return lesson;
     }
 

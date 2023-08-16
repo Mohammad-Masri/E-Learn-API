@@ -99,4 +99,12 @@ public class DashboardCourseController {
         return lessonResponse;
     }
 
+    @DeleteMapping("/{courseId}/lessons/{lessonId}")
+    public DashboardLessonResponse deleteLesson(@PathVariable String courseId, @PathVariable String lessonId) {
+        Course course = this.courseService.checkGetOneById(courseId);
+        Lesson lesson = this.lessonService.delete(lessonId, course);
+        DashboardLessonResponse lessonResponse = this.lessonService.makeDashboardLessonResponse(lesson);
+        return lessonResponse;
+    }
+
 }
