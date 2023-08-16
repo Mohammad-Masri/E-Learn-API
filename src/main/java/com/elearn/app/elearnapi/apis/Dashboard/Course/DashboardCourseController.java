@@ -52,21 +52,6 @@ public class DashboardCourseController {
         return courseResponse;
     }
 
-    @GetMapping("/{courseId}/lessons/{lessonId}")
-    public DashboardLessonResponse getLessonDetails(@PathVariable String courseId, @PathVariable String lessonId) {
-        Course course = this.courseService.checkGetOneById(courseId);
-        Lesson lesson = this.lessonService.checkGetOneByIdInCourse(lessonId, course);
-        DashboardLessonResponse lessonResponse = this.lessonService.makeDashboardLessonResponse(lesson);
-        return lessonResponse;
-    }
-
-    @PostMapping("/{courseId}/lessons")
-    public DashboardLessonResponse createLesson(@PathVariable String courseId, @RequestBody CreateLessonBody body) {
-        Lesson lesson = this.lessonService.create(courseId, body.getTitle(), body.getDescription(), body.getUrl());
-        DashboardLessonResponse lessonResponse = this.lessonService.makeDashboardLessonResponse(lesson);
-        return lessonResponse;
-    }
-
     @PutMapping("/{id}")
     public DashboardCourseResponse update(@PathVariable String id, @RequestBody CreateCourseBody body) {
         Course course = this.courseService.update(id, body.getTitle(), body.getDescription(), body.getTopicIds());
@@ -89,6 +74,29 @@ public class DashboardCourseController {
         DashboardCourseResponse courseResponse = this.courseService.makeDashboardCourseResponse(course);
 
         return courseResponse;
+    }
+
+    @PostMapping("/{courseId}/lessons")
+    public DashboardLessonResponse createLesson(@PathVariable String courseId, @RequestBody CreateLessonBody body) {
+        Lesson lesson = this.lessonService.create(courseId, body.getTitle(), body.getDescription(), body.getUrl());
+        DashboardLessonResponse lessonResponse = this.lessonService.makeDashboardLessonResponse(lesson);
+        return lessonResponse;
+    }
+
+    @GetMapping("/{courseId}/lessons")
+    public List<DashboardLessonResponse> getCourseLessons(@PathVariable String courseId) {
+        Course course = this.courseService.checkGetOneById(courseId);
+        List<DashboardLessonResponse> lessonResponse = this.lessonService
+                .makeDashboardLessonsResponse(course.getLessons());
+        return lessonResponse;
+    }
+
+    @GetMapping("/{courseId}/lessons/{lessonId}")
+    public DashboardLessonResponse getLessonDetails(@PathVariable String courseId, @PathVariable String lessonId) {
+        Course course = this.courseService.checkGetOneById(courseId);
+        Lesson lesson = this.lessonService.checkGetOneByIdInCourse(lessonId, course);
+        DashboardLessonResponse lessonResponse = this.lessonService.makeDashboardLessonResponse(lesson);
+        return lessonResponse;
     }
 
 }

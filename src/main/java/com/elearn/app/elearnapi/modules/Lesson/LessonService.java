@@ -37,8 +37,7 @@ public class LessonService {
     }
 
     public Lesson getOneByIdInCourse(String id, Course course) {
-        PrintUtilities.println("----- lessons");
-        PrintUtilities.printList(course.getLessons());
+
         Lesson lesson = ArrayUtilities.findOne(course.getLessons(), "getId", id);
         return lesson;
     }
