@@ -8,7 +8,7 @@ public class ArrayUtilities {
     public static <T, Y> T findOne(List<T> list, String methodName, Y id) {
         T o = list.stream().filter(obj -> {
             try {
-                return obj.getClass().getMethod(methodName).invoke(obj).equals(id);
+                return obj.getClass().getMethod(methodName).invoke(obj).toString().equals(id.toString());
             } catch (Exception e) {
                 return false;
             }

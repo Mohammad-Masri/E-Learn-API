@@ -52,6 +52,14 @@ public class DashboardCourseController {
         return courseResponse;
     }
 
+    @GetMapping("/{courseId}/lessons/{lessonId}")
+    public DashboardLessonResponse getLessonDetails(@PathVariable String courseId, @PathVariable String lessonId) {
+        Course course = this.courseService.checkGetOneById(courseId);
+        Lesson lesson = this.lessonService.checkGetOneByIdInCourse(lessonId, course);
+        DashboardLessonResponse lessonResponse = this.lessonService.makeDashboardLessonResponse(lesson);
+        return lessonResponse;
+    }
+
     @PostMapping("/{courseId}/lessons")
     public DashboardLessonResponse createLesson(@PathVariable String courseId, @RequestBody CreateLessonBody body) {
         Lesson lesson = this.lessonService.create(courseId, body.getTitle(), body.getDescription(), body.getUrl());
