@@ -21,6 +21,7 @@ public class Course {
     private Long id;
     private String title;
     private String description;
+    private Boolean isPublished;
 
     @ManyToMany
     @JoinTable(name = "course_topic", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "topic_id"))
@@ -36,6 +37,7 @@ public class Course {
         this.title = title;
         this.description = description;
         this.topics = topics;
+        this.isPublished = false;
     }
 
     public Long getId() {
