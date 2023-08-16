@@ -15,7 +15,7 @@ public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int order;
+    private int number;
     private String title;
     private String description;
     private String URL;
@@ -30,12 +30,12 @@ public class Lesson {
     }
 
     public Lesson(
-            int order,
+            int number,
             String title,
             String description,
             String URL) {
 
-        this.order = order;
+        this.number = number;
         this.title = title;
         this.description = description;
         this.URL = URL;
@@ -84,12 +84,12 @@ public class Lesson {
         this.isPublished = isPublished;
     }
 
-    public int getOrder() {
-        return order;
+    public int getNumber() {
+        return number;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public String getURL() {
