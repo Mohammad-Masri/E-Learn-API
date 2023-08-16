@@ -3,6 +3,7 @@ package com.elearn.app.elearnapi.modules.Topic;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.elearn.app.elearnapi.apis.Dashboard.Topic.DTO.DashboardTopicResponse;
 import com.elearn.app.elearnapi.errors.HTTPServerError;
 import com.elearn.app.elearnapi.modules.CourseTopic.CourseTopicService;
 import com.elearn.app.elearnapi.utilities.StringUtilities;
@@ -75,5 +77,20 @@ public class TopicService {
 
         this.topicRepository.delete(topic);
         return topic;
+    }
+
+    public DashboardTopicResponse makeDashboardTopicResponse(Topic topic) {
+        return new DashboardTopicResponse(topic.getId(), topic.getTitle(), topic.getDescription());
+    }
+
+    public List<DashboardTopicResponse> makeDashboardTopicsResponse(List<Topic> topics) {
+        List<DashboardTopicResponse> topicsResponse = new LinkedList<>();
+
+        for (int i = 0; i < topics.size(); i++) {
+            DashboardTopicResponse dashboardTopicResponse = this.makeDashboardTopicResponse(topics.get(i));
+            topicsResponse.add(dashboardTopicResponse);
+        }
+
+        return topicsResponse;
     }
 }

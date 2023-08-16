@@ -2,9 +2,6 @@ package com.elearn.app.elearnapi.config.filters;
 
 import java.io.IOException;
 
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
-
 import com.elearn.app.elearnapi.utilities.PrintUtilities;
 
 import jakarta.servlet.Filter;

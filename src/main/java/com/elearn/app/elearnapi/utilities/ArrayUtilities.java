@@ -1,6 +1,8 @@
 package com.elearn.app.elearnapi.utilities;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class ArrayUtilities {
     public static <T, Y> T findOne(List<T> list, String methodName, Y id) {
@@ -12,5 +14,9 @@ public class ArrayUtilities {
             }
         }).findFirst().orElse(null);
         return o;
+    }
+
+    public static <T> LinkedList<T> convertSetToLinkedList(Set<T> set) {
+        return new LinkedList<>(set);
     }
 }

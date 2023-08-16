@@ -2,6 +2,7 @@ package com.elearn.app.elearnapi.modules.Course;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -9,10 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardCourseResponse;
+import com.elearn.app.elearnapi.apis.Dashboard.Topic.DTO.DashboardTopicResponse;
 import com.elearn.app.elearnapi.errors.HTTPServerError;
 import com.elearn.app.elearnapi.modules.CourseTopic.CourseTopicService;
 import com.elearn.app.elearnapi.modules.Topic.Topic;
 import com.elearn.app.elearnapi.modules.Topic.TopicService;
+import com.elearn.app.elearnapi.utilities.ArrayUtilities;
 
 @Service
 public class CourseService {
@@ -86,5 +90,22 @@ public class CourseService {
         this.courseRepository.delete(course);
 
         return course;
+    }
+
+    public DashboardCourseResponse makeDashboardCourseResponse(Course course) {
+        List<Topic> topicsList = ArrayUtilities.convertSetToLinkedList(course.getTopics());
+        List<DashboardTopicResponse> topicResponses = this.topicService.makeDashboardTopicsResponse(topicsList);
+        return new DashboardCourseResponse(course, topicResponses);
+    }
+
+    public List<DashboardCourseResponse> makeDashboardCoursesResponse(List<Course> courses) {
+        List<DashboardCourseResponse> coursesResponse = new LinkedList<>();
+
+        for (int i = 0; i < courses.size(); i++) {
+            DashboardCourseResponse dashboardCourseResponse = this.makeDashboardCourseResponse(courses.get(i));
+            coursesResponse.add(dashboardCourseResponse);
+        }
+
+        return coursesResponse;
     }
 }
