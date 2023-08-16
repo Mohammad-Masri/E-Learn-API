@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/dashboard/courses")
-public class CourseController {
+public class DashboardCourseController {
 
     @Autowired
     private CourseService courseService;
