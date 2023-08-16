@@ -14,6 +14,7 @@ import com.elearn.app.elearnapi.modules.Lesson.Lesson;
 import com.elearn.app.elearnapi.modules.Lesson.LessonService;
 import com.elearn.app.elearnapi.utilities.PrintUtilities;
 import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardCourseResponse;
+import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardLessonResponse;
 import com.elearn.app.elearnapi.modules.Course.Course;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -52,9 +53,10 @@ public class DashboardCourseController {
     }
 
     @PostMapping("/{courseId}/lessons")
-    public Lesson createLesson(@PathVariable String courseId, @RequestBody CreateLessonBody body) {
+    public DashboardLessonResponse createLesson(@PathVariable String courseId, @RequestBody CreateLessonBody body) {
         Lesson lesson = this.lessonService.create(courseId, body.getTitle(), body.getDescription(), body.getUrl());
-        return lesson;
+        DashboardLessonResponse lessonResponse = this.lessonService.makeDashboardLessonResponse(lesson);
+        return lessonResponse;
     }
 
     @PutMapping("/{id}")
