@@ -60,6 +60,22 @@ public class LessonService {
         return lesson;
     }
 
+    public Lesson update(String id, Course course,
+            String title,
+            String description,
+            String url) {
+
+        Lesson lesson = this.checkGetOneByIdInCourse(id, course);
+
+        lesson.setTitle(title);
+        lesson.setDescription(description);
+        lesson.setURL(url);
+
+        lesson = this.lessonRepository.save(lesson);
+
+        return lesson;
+    }
+
     public Lesson delete(String id, Course course) {
         Lesson lesson = this.checkGetOneByIdInCourse(id, course);
         this.lessonRepository.delete(lesson);

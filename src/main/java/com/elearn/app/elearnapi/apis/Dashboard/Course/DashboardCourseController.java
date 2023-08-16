@@ -53,7 +53,7 @@ public class DashboardCourseController {
     }
 
     @PutMapping("/{id}")
-    public DashboardCourseResponse update(@PathVariable String id, @RequestBody CreateCourseBody body) {
+    public DashboardCourseResponse updateCourse(@PathVariable String id, @RequestBody CreateCourseBody body) {
         Course course = this.courseService.update(id, body.getTitle(), body.getDescription(), body.getTopicIds());
         DashboardCourseResponse courseResponse = this.courseService.makeDashboardCourseResponse(course);
 
@@ -69,7 +69,7 @@ public class DashboardCourseController {
     }
 
     @DeleteMapping("/{id}")
-    public DashboardCourseResponse delete(@PathVariable String id) {
+    public DashboardCourseResponse deleteCrouse(@PathVariable String id) {
         Course course = this.courseService.delete(id);
         DashboardCourseResponse courseResponse = this.courseService.makeDashboardCourseResponse(course);
 
@@ -95,6 +95,16 @@ public class DashboardCourseController {
     public DashboardLessonResponse getLessonDetails(@PathVariable String courseId, @PathVariable String lessonId) {
         Course course = this.courseService.checkGetOneById(courseId);
         Lesson lesson = this.lessonService.checkGetOneByIdInCourse(lessonId, course);
+        DashboardLessonResponse lessonResponse = this.lessonService.makeDashboardLessonResponse(lesson);
+        return lessonResponse;
+    }
+
+    @PutMapping("/{courseId}/lessons/{lessonId}")
+    public DashboardLessonResponse updateLesson(@PathVariable String courseId, @PathVariable String lessonId,
+            @RequestBody CreateLessonBody body) {
+        Course course = this.courseService.checkGetOneById(courseId);
+        Lesson lesson = this.lessonService.update(lessonId, course, body.getTitle(), body.getDescription(),
+                body.getUrl());
         DashboardLessonResponse lessonResponse = this.lessonService.makeDashboardLessonResponse(lesson);
         return lessonResponse;
     }
