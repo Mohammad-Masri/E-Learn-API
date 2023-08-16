@@ -12,6 +12,7 @@ import com.elearn.app.elearnapi.modules.User.DTO.StudentUserResponse;
 import com.elearn.app.elearnapi.modules.User.DTO.UserResponse;
 import com.elearn.app.elearnapi.utilities.JWTUtilities;
 import com.elearn.app.elearnapi.utilities.PasswordUtilities;
+import com.elearn.app.elearnapi.utilities.PrintUtilities;
 import com.elearn.app.elearnapi.utilities.StringUtilities;
 
 @Service
@@ -42,6 +43,15 @@ public class UserService {
                     String.format("there is no user registered with this email ( %s )", email));
         }
         return user;
+    }
+
+    public void checkIsInRole(User user, UserRole userRole) {
+
+        if (!user.getRole().equals(userRole)) {
+            throw new HTTPServerError(HttpStatus.BAD_REQUEST,
+                    String.format("this email ( %s ) is not related to a ( %s ) account", user.getEmail(),
+                            userRole.toString()));
+        }
     }
 
     public void checkPasswordIsCorrect(User user, String password) {
