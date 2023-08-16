@@ -36,7 +36,7 @@ public class FilterRegistration {
         FilterRegistrationBean<IsAdminFilter> registrationBean = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new IsAdminFilter());
-        registrationBean.setUrlPatterns(Arrays.asList("/dashboard/**"));
+        registrationBean.setUrlPatterns(Arrays.asList("/dashboard/*"));
         registrationBean.setOrder(3);
 
         return registrationBean;
