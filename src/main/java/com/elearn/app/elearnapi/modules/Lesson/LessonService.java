@@ -23,6 +23,10 @@ public class LessonService {
     @Autowired
     private CourseService courseService;
 
+    public Lesson save(Lesson lesson) {
+        return this.lessonRepository.save(lesson);
+    }
+
     public Lesson getOneById(String id) {
         Lesson lesson = this.lessonRepository.findById(id).orElse(null);
         return lesson;
@@ -56,7 +60,7 @@ public class LessonService {
         List<Lesson> lessons = course.getLessons();
         int number = lessons.size() + 1;
         Lesson lesson = new Lesson(number, title, description, URL, course);
-        lesson = this.lessonRepository.save(lesson);
+        lesson = this.save(lesson);
         return lesson;
     }
 
@@ -79,6 +83,15 @@ public class LessonService {
     public Lesson delete(String id, Course course) {
         Lesson lesson = this.checkGetOneByIdInCourse(id, course);
         this.lessonRepository.delete(lesson);
+
+        // reordering the number of lessons in this course
+        List<Lesson> lessons = course.getLessons();
+        for (Lesson l : lessons) {
+            if (l.getNumber() > lesson.getNumber()) {
+                l.setNumber(l.getNumber() - 1);
+                this.save(l);
+            }
+        }
         return lesson;
     }
 
