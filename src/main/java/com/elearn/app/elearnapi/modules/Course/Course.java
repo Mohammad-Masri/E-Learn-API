@@ -72,6 +72,14 @@ public class Course {
         this.topics = topics;
     }
 
+    public Boolean getIsPublished() {
+        return isPublished;
+    }
+
+    public void setIsPublished(Boolean isPublished) {
+        this.isPublished = isPublished;
+    }
+
     @Override
     public String toString() {
         return "id: " + this.id + ", title: " + this.title;
