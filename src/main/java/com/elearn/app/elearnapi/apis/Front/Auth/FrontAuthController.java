@@ -14,7 +14,7 @@ import com.elearn.app.elearnapi.modules.User.DTO.UserResponse;
 
 @RestController
 @RequestMapping("/front/auth")
-public class AuthController {
+public class FrontAuthController {
 
     @Autowired
     private UserService userService;

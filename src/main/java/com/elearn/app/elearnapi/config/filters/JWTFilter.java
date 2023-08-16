@@ -20,7 +20,8 @@ public class JWTFilter extends OncePerRequestFilter {
 
     private static final String[] EXCLUDED_URLS = {
             "/api/front/auth/login",
-            "/api/front/auth/sign-up"
+            "/api/front/auth/sign-up",
+            "/api/dashboard/auth/login"
     };
 
     @Override
