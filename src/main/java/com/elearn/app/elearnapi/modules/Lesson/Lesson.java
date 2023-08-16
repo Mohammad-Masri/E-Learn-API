@@ -1,9 +1,13 @@
 package com.elearn.app.elearnapi.modules.Lesson;
 
+import com.elearn.app.elearnapi.modules.Course.Course;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Lesson {
@@ -17,6 +21,10 @@ public class Lesson {
     private String URL;
     private Boolean isFree;
     private Boolean isPublished;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 
     public Lesson() {
     }
