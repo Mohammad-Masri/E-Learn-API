@@ -84,6 +84,14 @@ public class UserService {
         return user;
     }
 
+    public User createAdminUser(
+            String name,
+            String email,
+            String password) {
+        User user = this.createUser(name, email, password, UserRole.ADMIN);
+        return user;
+    }
+
     public StudentUserResponse makeStudentUserResponse(User user) {
         return new StudentUserResponse(user);
     }
