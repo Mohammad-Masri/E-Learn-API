@@ -21,7 +21,7 @@ public class LessonService {
         Course course = this.courseService.checkGetOneById(courseId);
         List<Lesson> lessons = course.getLessons();
         int number = lessons.size() + 1;
-        Lesson lesson = new Lesson(number, title, description, URL);
+        Lesson lesson = new Lesson(number, title, description, URL, course);
         lesson = this.lessonRepository.save(lesson);
         return lesson;
     }

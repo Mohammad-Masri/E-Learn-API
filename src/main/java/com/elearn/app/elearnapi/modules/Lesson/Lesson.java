@@ -33,12 +33,14 @@ public class Lesson {
             int number,
             String title,
             String description,
-            String URL) {
+            String URL,
+            Course course) {
 
         this.number = number;
         this.title = title;
         this.description = description;
         this.URL = URL;
+        this.course = course;
         this.isFree = false;
         this.isPublished = false;
 
