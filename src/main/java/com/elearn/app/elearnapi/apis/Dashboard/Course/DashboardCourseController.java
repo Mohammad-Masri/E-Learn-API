@@ -45,6 +45,12 @@ public class DashboardCourseController {
         return topic;
     }
 
+    @PutMapping("/{id}/is-published")
+    public Course toggleIsPublished(@PathVariable String id) {
+        Course topic = this.courseService.toggleIsPublished(id);
+        return topic;
+    }
+
     @DeleteMapping("/{id}")
     public Course delete(@PathVariable String id) {
         Course topic = this.courseService.delete(id);

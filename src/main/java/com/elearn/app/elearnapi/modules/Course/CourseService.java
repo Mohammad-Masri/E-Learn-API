@@ -69,6 +69,13 @@ public class CourseService {
         return course;
     }
 
+    public Course toggleIsPublished(String id) {
+        Course course = this.checkGetOneById(id);
+        course.setIsPublished(!course.getIsPublished());
+        course = this.courseRepository.save(course);
+        return course;
+    }
+
     public Course delete(String id) {
         Course course = this.checkGetOneById(id);
         this.courseTopicService.deleteRelatedCourseTopicForThisCourse(course);
