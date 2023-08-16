@@ -75,8 +75,22 @@ public class LessonService {
         lesson.setDescription(description);
         lesson.setURL(url);
 
-        lesson = this.lessonRepository.save(lesson);
+        lesson = this.save(lesson);
 
+        return lesson;
+    }
+
+    public Lesson toggleIsPublish(String id, Course course) {
+        Lesson lesson = this.checkGetOneByIdInCourse(id, course);
+        lesson.setIsPublished(!lesson.getIsPublished());
+        lesson = this.save(lesson);
+        return lesson;
+    }
+
+    public Lesson toggleIsFree(String id, Course course) {
+        Lesson lesson = this.checkGetOneByIdInCourse(id, course);
+        lesson.setIsFree(!lesson.getIsFree());
+        lesson = this.save(lesson);
         return lesson;
     }
 

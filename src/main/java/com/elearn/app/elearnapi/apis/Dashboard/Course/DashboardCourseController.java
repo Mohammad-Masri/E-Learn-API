@@ -117,4 +117,22 @@ public class DashboardCourseController {
         return lessonResponse;
     }
 
+    @PutMapping("/{courseId}/lessons/{lessonId}/is-published")
+    public DashboardLessonResponse toggleLessonIsPublished(@PathVariable String courseId,
+            @PathVariable String lessonId) {
+        Course course = this.courseService.checkGetOneById(courseId);
+        Lesson lesson = this.lessonService.toggleIsPublish(lessonId, course);
+        DashboardLessonResponse lessonResponse = this.lessonService.makeDashboardLessonResponse(lesson);
+        return lessonResponse;
+    }
+
+    @PutMapping("/{courseId}/lessons/{lessonId}/is-free")
+    public DashboardLessonResponse toggleLessonIsFree(@PathVariable String courseId,
+            @PathVariable String lessonId) {
+        Course course = this.courseService.checkGetOneById(courseId);
+        Lesson lesson = this.lessonService.toggleIsFree(lessonId, course);
+        DashboardLessonResponse lessonResponse = this.lessonService.makeDashboardLessonResponse(lesson);
+        return lessonResponse;
+    }
+
 }
