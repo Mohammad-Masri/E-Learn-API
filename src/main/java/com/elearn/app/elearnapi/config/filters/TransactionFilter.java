@@ -25,7 +25,8 @@ public class TransactionFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
 
         PrintUtilities
-                .println(String.format("Starting a transaction for req : %s %s", req.getMethod(), req.getRequestURI()));
+                .println(String.format("### Starting a transaction for req : %s %s", req.getMethod(),
+                        req.getRequestURI()));
 
         chain.doFilter(request, response);
 
