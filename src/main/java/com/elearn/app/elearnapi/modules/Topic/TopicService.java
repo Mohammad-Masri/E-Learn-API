@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.elearn.app.elearnapi.apis.Dashboard.Topic.DTO.DashboardTopicResponse;
+import com.elearn.app.elearnapi.apis.Front.Topic.DTO.FrontTopicResponse;
 import com.elearn.app.elearnapi.errors.HTTPServerError;
 import com.elearn.app.elearnapi.modules.CourseTopic.CourseTopicService;
 import com.elearn.app.elearnapi.utilities.StringUtilities;
@@ -89,6 +90,21 @@ public class TopicService {
         for (int i = 0; i < topics.size(); i++) {
             DashboardTopicResponse dashboardTopicResponse = this.makeDashboardTopicResponse(topics.get(i));
             topicsResponse.add(dashboardTopicResponse);
+        }
+
+        return topicsResponse;
+    }
+
+    public FrontTopicResponse makeFrontTopicResponse(Topic topic) {
+        return new FrontTopicResponse(topic.getId(), topic.getTitle(), topic.getDescription());
+    }
+
+    public List<FrontTopicResponse> makeFrontTopicsResponse(List<Topic> topics) {
+        List<FrontTopicResponse> topicsResponse = new LinkedList<>();
+
+        for (int i = 0; i < topics.size(); i++) {
+            FrontTopicResponse frontTopicResponse = this.makeFrontTopicResponse(topics.get(i));
+            topicsResponse.add(frontTopicResponse);
         }
 
         return topicsResponse;

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/dashboard/topics")
-public class TopicController {
+public class DashboardTopicController {
 
     @Autowired
     private TopicService topicService;
