@@ -9,6 +9,7 @@ import com.elearn.app.elearnapi.config.constants.UserRole;
 import com.elearn.app.elearnapi.errors.ErrorResponse;
 import com.elearn.app.elearnapi.errors.HTTPServerError;
 import com.elearn.app.elearnapi.utilities.JsonUtilities;
+import com.elearn.app.elearnapi.utilities.PrintUtilities;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,6 +23,8 @@ public class IsAdminFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain chain) throws IOException, ServletException {
+
+        PrintUtilities.println("#- IsAdminFilter");
 
         String role = (String) request.getAttribute("role");
 

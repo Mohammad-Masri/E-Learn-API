@@ -26,6 +26,11 @@ public class JWTFilter extends OncePerRequestFilter {
             "/api/v3/api-docs"
     };
 
+    // Add the URLs for APIs where authentication is optional
+    private static final String[] OPTIONAL_AUTH_URLS = {
+            "/api/front/topics"
+    };
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -52,7 +57,16 @@ public class JWTFilter extends OncePerRequestFilter {
 
             boolean isTokenValid = JWTUtilities.isTokenValid(JWTToken);
 
-            if (!isTokenValid) {
+            // Check if the requested URL is in the optional auth list
+            boolean optionalAuth = false;
+            for (String optionalUrl : OPTIONAL_AUTH_URLS) {
+                if (requestURI.startsWith(optionalUrl)) {
+                    optionalAuth = true;
+                    break;
+                }
+            }
+
+            if (!isTokenValid && !optionalAuth) {
 
                 try {
                     throw new HTTPServerError(HttpStatus.UNAUTHORIZED, "Token is invalid or expired");
@@ -66,10 +80,14 @@ public class JWTFilter extends OncePerRequestFilter {
 
             }
 
-            Claims claims = JWTUtilities.getClaimsFromToken(JWTToken);
-
-            request.setAttribute("id", claims.get("id"));
-            request.setAttribute("role", claims.get("role"));
+            if (isTokenValid) {
+                Claims claims = JWTUtilities.getClaimsFromToken(JWTToken);
+                request.setAttribute("id", claims.get("id"));
+                request.setAttribute("role", claims.get("role"));
+                request.setAttribute("isGuest", false);
+            } else {
+                request.setAttribute("isGuest", true);
+            }
 
             chain.doFilter(request, response);
         }
