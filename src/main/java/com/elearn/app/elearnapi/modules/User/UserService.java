@@ -20,6 +20,20 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    public User findById(String id) {
+        User user = this.userRepository.findById(id).orElse(null);
+        return user;
+    }
+
+    public User checkFindById(String id) {
+        User user = this.findById(id);
+        if (user == null) {
+            throw new HTTPServerError(HttpStatus.NOT_FOUND,
+                    String.format("there is no user registered with this id ( %s )", id));
+        }
+        return user;
+    }
+
     public User findByEmail(String email) {
         String normalizedEmail = StringUtilities.normalize(email);
         User user = this.userRepository.findByEmail(normalizedEmail);
