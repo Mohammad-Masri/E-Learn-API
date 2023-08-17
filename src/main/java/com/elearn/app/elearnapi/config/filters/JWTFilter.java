@@ -28,7 +28,8 @@ public class JWTFilter extends OncePerRequestFilter {
 
     // Add the URLs for APIs where authentication is optional
     private static final String[] OPTIONAL_AUTH_URLS = {
-            "/api/front/topics"
+            "/api/front/topics",
+            "/api/front/courses",
     };
 
     @Override
