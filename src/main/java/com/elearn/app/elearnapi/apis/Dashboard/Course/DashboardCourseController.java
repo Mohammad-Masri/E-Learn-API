@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.elearn.app.elearnapi.modules.Course.CourseService;
 import com.elearn.app.elearnapi.modules.Lesson.Lesson;
 import com.elearn.app.elearnapi.modules.Lesson.LessonService;
-import com.elearn.app.elearnapi.utilities.PrintUtilities;
+import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardCourseInListResponse;
 import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardCourseResponse;
 import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardLessonResponse;
 import com.elearn.app.elearnapi.modules.Course.Course;
@@ -31,9 +31,10 @@ public class DashboardCourseController {
     private LessonService lessonService;
 
     @GetMapping
-    public List<DashboardCourseResponse> getAllCourses() {
+    public List<DashboardCourseInListResponse> getAllCourses() {
         List<Course> courses = this.courseService.getAll();
-        List<DashboardCourseResponse> courseResponses = this.courseService.makeDashboardCoursesResponse(courses);
+        List<DashboardCourseInListResponse> courseResponses = this.courseService
+                .makeDashboardCoursesInListResponse(courses);
         return courseResponses;
     }
 
@@ -45,33 +46,33 @@ public class DashboardCourseController {
     }
 
     @PostMapping
-    public DashboardCourseResponse createNewCourse(@RequestBody CreateCourseBody body) {
+    public DashboardCourseInListResponse createNewCourse(@RequestBody CreateCourseBody body) {
         Course course = this.courseService.create(body.getTitle(), body.getDescription(), body.getTopicIds());
-        DashboardCourseResponse courseResponse = this.courseService.makeDashboardCourseResponse(course);
+        DashboardCourseInListResponse courseResponse = this.courseService.makeDashboardCourseInListResponse(course);
 
         return courseResponse;
     }
 
     @PutMapping("/{id}")
-    public DashboardCourseResponse updateCourse(@PathVariable String id, @RequestBody CreateCourseBody body) {
+    public DashboardCourseInListResponse updateCourse(@PathVariable String id, @RequestBody CreateCourseBody body) {
         Course course = this.courseService.update(id, body.getTitle(), body.getDescription(), body.getTopicIds());
-        DashboardCourseResponse courseResponse = this.courseService.makeDashboardCourseResponse(course);
+        DashboardCourseInListResponse courseResponse = this.courseService.makeDashboardCourseInListResponse(course);
 
         return courseResponse;
     }
 
     @PutMapping("/{id}/is-published")
-    public DashboardCourseResponse toggleIsPublished(@PathVariable String id) {
+    public DashboardCourseInListResponse toggleIsPublished(@PathVariable String id) {
         Course course = this.courseService.toggleIsPublished(id);
-        DashboardCourseResponse courseResponse = this.courseService.makeDashboardCourseResponse(course);
+        DashboardCourseInListResponse courseResponse = this.courseService.makeDashboardCourseInListResponse(course);
 
         return courseResponse;
     }
 
     @DeleteMapping("/{id}")
-    public DashboardCourseResponse deleteCrouse(@PathVariable String id) {
+    public DashboardCourseInListResponse deleteCrouse(@PathVariable String id) {
         Course course = this.courseService.delete(id);
-        DashboardCourseResponse courseResponse = this.courseService.makeDashboardCourseResponse(course);
+        DashboardCourseInListResponse courseResponse = this.courseService.makeDashboardCourseInListResponse(course);
 
         return courseResponse;
     }

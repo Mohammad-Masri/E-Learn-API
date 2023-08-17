@@ -10,10 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardCourseInListResponse;
 import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardCourseResponse;
+import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardLessonResponse;
 import com.elearn.app.elearnapi.apis.Dashboard.Topic.DTO.DashboardTopicResponse;
 import com.elearn.app.elearnapi.errors.HTTPServerError;
 import com.elearn.app.elearnapi.modules.CourseTopic.CourseTopicService;
+import com.elearn.app.elearnapi.modules.Lesson.LessonService;
 import com.elearn.app.elearnapi.modules.Topic.Topic;
 import com.elearn.app.elearnapi.modules.Topic.TopicService;
 import com.elearn.app.elearnapi.utilities.ArrayUtilities;
@@ -29,6 +32,9 @@ public class CourseService {
 
     @Autowired
     private TopicService topicService;
+
+    @Autowired
+    private LessonService lessonService;
 
     public List<Course> getAll() {
         List<Course> courses = new ArrayList<>();
@@ -92,10 +98,28 @@ public class CourseService {
         return course;
     }
 
+    public DashboardCourseInListResponse makeDashboardCourseInListResponse(Course course) {
+        return new DashboardCourseInListResponse(course);
+    }
+
+    public List<DashboardCourseInListResponse> makeDashboardCoursesInListResponse(List<Course> courses) {
+        List<DashboardCourseInListResponse> coursesResponse = new LinkedList<>();
+
+        for (int i = 0; i < courses.size(); i++) {
+            DashboardCourseInListResponse dashboardCourseResponse = this
+                    .makeDashboardCourseInListResponse(courses.get(i));
+            coursesResponse.add(dashboardCourseResponse);
+        }
+
+        return coursesResponse;
+    }
+
     public DashboardCourseResponse makeDashboardCourseResponse(Course course) {
         List<Topic> topicsList = ArrayUtilities.convertSetToLinkedList(course.getTopics());
         List<DashboardTopicResponse> topicResponses = this.topicService.makeDashboardTopicsResponse(topicsList);
-        return new DashboardCourseResponse(course, topicResponses);
+
+        List<DashboardLessonResponse> lessons = this.lessonService.makeDashboardLessonsResponse(course.getLessons());
+        return new DashboardCourseResponse(course, topicResponses, lessons);
     }
 
     public List<DashboardCourseResponse> makeDashboardCoursesResponse(List<Course> courses) {
