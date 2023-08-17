@@ -10,7 +10,11 @@ import com.elearn.app.elearnapi.config.constants.UserRole;
 import com.elearn.app.elearnapi.modules.User.User;
 import com.elearn.app.elearnapi.modules.User.UserService;
 import com.elearn.app.elearnapi.modules.User.DTO.LoginResponse;
+import com.elearn.app.elearnapi.modules.User.DTO.TokenResponse;
 import com.elearn.app.elearnapi.modules.User.DTO.UserResponse;
+import com.elearn.app.elearnapi.utilities.JWTUtilities;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/front/auth")
@@ -33,6 +37,15 @@ public class FrontAuthController {
         this.userService.checkPasswordIsCorrect(user, body.getPassword());
         LoginResponse loginResponse = this.userService.makeLoginResponse(user);
         return loginResponse;
+    }
+
+    @PostMapping("/refresh-token")
+    public TokenResponse refreshToken(HttpServletRequest request) {
+        String id = (String) request.getAttribute("id");
+        User user = this.userService.checkFindById(id);
+        String token = JWTUtilities.generateJwtToken(user);
+        TokenResponse tokenResponse = this.userService.makeTokenResponse(token);
+        return tokenResponse;
     }
 
 }
