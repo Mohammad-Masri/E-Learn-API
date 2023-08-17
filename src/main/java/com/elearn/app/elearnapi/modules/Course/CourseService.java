@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardCourseInListResponse;
 import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardCourseResponse;
 import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardLessonResponse;
+import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.FrontCourseInListResponse;
 import com.elearn.app.elearnapi.apis.Dashboard.Topic.DTO.DashboardTopicResponse;
 import com.elearn.app.elearnapi.errors.HTTPServerError;
 import com.elearn.app.elearnapi.modules.CourseTopic.CourseTopicService;
@@ -97,6 +98,24 @@ public class CourseService {
         this.courseRepository.delete(course);
 
         return course;
+    }
+
+    public FrontCourseInListResponse makeFrontCourseInListResponse(Course course) {
+        Boolean isFavorite = false;
+        Boolean isPurchased = false;
+        return new FrontCourseInListResponse(course, isFavorite, isPurchased);
+    }
+
+    public List<FrontCourseInListResponse> makeFrontCoursesInListResponse(List<Course> courses) {
+        List<FrontCourseInListResponse> coursesResponse = new LinkedList<>();
+
+        for (int i = 0; i < courses.size(); i++) {
+            FrontCourseInListResponse dashboardCourseResponse = this
+                    .makeFrontCourseInListResponse(courses.get(i));
+            coursesResponse.add(dashboardCourseResponse);
+        }
+
+        return coursesResponse;
     }
 
     public DashboardCourseInListResponse makeDashboardCourseInListResponse(Course course) {
