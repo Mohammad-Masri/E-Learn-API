@@ -27,18 +27,22 @@ public class IsAdminFilter extends OncePerRequestFilter {
         PrintUtilities.println("#- IsAdminFilter");
 
         String role = (String) request.getAttribute("role");
+        Boolean isGuest = (Boolean) request.getAttribute("isGuest");
 
-        if (role == null || !role.equals(UserRole.ADMIN.toString())) {
-            try {
-                throw new HTTPServerError(HttpStatus.UNAUTHORIZED, "this action is not allowed");
-            } catch (HTTPServerError e) {
-                ErrorResponse errorResponse = new ErrorResponse(e.getStatusCode(),
-                        e.getMessage());
-                response.setContentType("application/json");
-                response.setStatus(e.getStatusCode());
-                response.getWriter().write(JsonUtilities.convertToJson(errorResponse));
-                return;
+        if (!isGuest) {
+            if (role == null || !role.equals(UserRole.ADMIN.toString())) {
+                try {
+                    throw new HTTPServerError(HttpStatus.UNAUTHORIZED, "this action is not allowed");
+                } catch (HTTPServerError e) {
+                    ErrorResponse errorResponse = new ErrorResponse(e.getStatusCode(),
+                            e.getMessage());
+                    response.setContentType("application/json");
+                    response.setStatus(e.getStatusCode());
+                    response.getWriter().write(JsonUtilities.convertToJson(errorResponse));
+                    return;
+                }
             }
+
         }
 
         chain.doFilter(request, response);

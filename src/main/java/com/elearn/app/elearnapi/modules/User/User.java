@@ -1,6 +1,10 @@
 package com.elearn.app.elearnapi.modules.User;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import com.elearn.app.elearnapi.config.constants.UserRole;
+import com.elearn.app.elearnapi.modules.UserPurchasedCourse.UserPurchasedCourse;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,6 +13,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class User {
@@ -24,6 +29,9 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserPurchasedCourse> purchasedCourses = new ArrayList<>();
 
     public User() {
     }
@@ -78,6 +86,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<UserPurchasedCourse> getPurchasedCourses() {
+        return purchasedCourses;
+    }
+
+    public void setPurchasedCourses(List<UserPurchasedCourse> purchasedCourses) {
+        this.purchasedCourses = purchasedCourses;
     }
 
     @Override

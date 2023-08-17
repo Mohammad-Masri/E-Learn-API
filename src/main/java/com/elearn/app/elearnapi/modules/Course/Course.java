@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.elearn.app.elearnapi.modules.Lesson.Lesson;
 import com.elearn.app.elearnapi.modules.Topic.Topic;
+import com.elearn.app.elearnapi.modules.UserPurchasedCourse.UserPurchasedCourse;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,6 +40,9 @@ public class Course {
 
     @OneToMany(mappedBy = "course")
     private List<Lesson> lessons = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course")
+    private List<UserPurchasedCourse> purchasedByUsers = new ArrayList<>();
 
     public Course() {
     }
@@ -109,6 +113,14 @@ public class Course {
 
     public void setLessons(List<Lesson> lessons) {
         this.lessons = lessons;
+    }
+
+    public List<UserPurchasedCourse> getPurchasedByUsers() {
+        return purchasedByUsers;
+    }
+
+    public void setPurchasedByUsers(List<UserPurchasedCourse> purchasedByUsers) {
+        this.purchasedByUsers = purchasedByUsers;
     }
 
     @Override

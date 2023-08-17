@@ -50,6 +50,7 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         if (exclude) {
+            request.setAttribute("isGuest", true);
             // Skip filtering for excluded URLs
             chain.doFilter(request, response);
         } else {
