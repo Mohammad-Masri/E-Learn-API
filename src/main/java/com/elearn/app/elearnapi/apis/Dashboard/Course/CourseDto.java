@@ -5,14 +5,17 @@ import com.elearn.app.elearnapi.utilities.JsonUtilities;
 class CreateCourseBody {
     private String title;
     private String description;
+    private Double price;
     private String[] topicIds = new String[0];
 
     public CreateCourseBody(
             String title,
             String description,
+            Double price,
             String[] topicIds) {
         this.title = title;
         this.description = description;
+        this.price = price;
         this.topicIds = topicIds;
     }
 
@@ -22,6 +25,10 @@ class CreateCourseBody {
 
     public String getDescription() {
         return description;
+    }
+
+    public Double getPrice() {
+        return price;
     }
 
     public String[] getTopicIds() {

@@ -47,7 +47,8 @@ public class DashboardCourseController {
 
     @PostMapping
     public DashboardCourseInListResponse createNewCourse(@RequestBody CreateCourseBody body) {
-        Course course = this.courseService.create(body.getTitle(), body.getDescription(), body.getTopicIds());
+        Course course = this.courseService.create(body.getTitle(), body.getDescription(), body.getPrice(),
+                body.getTopicIds());
         DashboardCourseInListResponse courseResponse = this.courseService.makeDashboardCourseInListResponse(course);
 
         return courseResponse;
@@ -55,7 +56,8 @@ public class DashboardCourseController {
 
     @PutMapping("/{id}")
     public DashboardCourseInListResponse updateCourse(@PathVariable String id, @RequestBody CreateCourseBody body) {
-        Course course = this.courseService.update(id, body.getTitle(), body.getDescription(), body.getTopicIds());
+        Course course = this.courseService.update(id, body.getTitle(), body.getDescription(), body.getPrice(),
+                body.getTopicIds());
         DashboardCourseInListResponse courseResponse = this.courseService.makeDashboardCourseInListResponse(course);
 
         return courseResponse;

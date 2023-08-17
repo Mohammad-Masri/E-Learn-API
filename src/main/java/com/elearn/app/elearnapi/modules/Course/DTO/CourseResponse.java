@@ -7,6 +7,7 @@ public abstract class CourseResponse {
     private Long id;
     private String title;
     private String description;
+    private Double price;
 
     public CourseResponse() {
     }
@@ -15,6 +16,7 @@ public abstract class CourseResponse {
             Course course) {
         this.id = course.getId();
         this.title = course.getTitle();
+        this.price = course.getPrice();
         this.description = course.getDescription();
     }
 
@@ -32,6 +34,14 @@ public abstract class CourseResponse {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public String getDescription() {

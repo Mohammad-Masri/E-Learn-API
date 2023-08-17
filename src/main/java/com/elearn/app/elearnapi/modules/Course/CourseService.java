@@ -60,18 +60,19 @@ public class CourseService {
         return courses;
     }
 
-    public Course create(String title, String description, String[] topicIds) {
+    public Course create(String title, String description, Double price, String[] topicIds) {
         Set<Topic> topics = this.topicService.getAllByIds(topicIds);
-        Course course = new Course(title, description, topics);
+        Course course = new Course(title, description, price, topics);
         course = this.courseRepository.save(course);
         return course;
     }
 
-    public Course update(String id, String title, String description, String[] topicIds) {
+    public Course update(String id, String title, String description, Double price, String[] topicIds) {
         Course course = this.checkGetOneById(id);
         Set<Topic> topics = this.topicService.getAllByIds(topicIds);
         course.setTitle(title);
         course.setDescription(description);
+        course.setPrice(price);
         course.setTopics(topics);
 
         course = this.courseRepository.save(course);

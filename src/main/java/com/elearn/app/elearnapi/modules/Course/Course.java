@@ -8,6 +8,7 @@ import java.util.Set;
 import com.elearn.app.elearnapi.modules.Lesson.Lesson;
 import com.elearn.app.elearnapi.modules.Topic.Topic;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,9 +24,14 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
     private String description;
     private Boolean isPublished;
+
+    @Column(nullable = false)
+    private Double price;
 
     @ManyToMany
     @JoinTable(name = "course_topic", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "topic_id"))
@@ -40,9 +46,11 @@ public class Course {
     public Course(
             String title,
             String description,
+            Double price,
             Set<Topic> topics) {
         this.title = title;
         this.description = description;
+        this.price = price;
         this.topics = topics;
         this.isPublished = false;
     }
@@ -69,6 +77,14 @@ public class Course {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public Set<Topic> getTopics() {
