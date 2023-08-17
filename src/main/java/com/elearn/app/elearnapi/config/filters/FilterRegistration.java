@@ -36,7 +36,18 @@ public class FilterRegistration {
         FilterRegistrationBean<IsAdminFilter> registrationBean = new FilterRegistrationBean<>();
 
         registrationBean.setFilter(new IsAdminFilter());
-        registrationBean.setUrlPatterns(Arrays.asList("/dashboard/**"));
+        registrationBean.setUrlPatterns(Arrays.asList("/dashboard/*"));
+        registrationBean.setOrder(3);
+
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean<IsStudentFilter> isStudentFilter() {
+        FilterRegistrationBean<IsStudentFilter> registrationBean = new FilterRegistrationBean<>();
+
+        registrationBean.setFilter(new IsStudentFilter());
+        registrationBean.setUrlPatterns(Arrays.asList("/front/*"));
         registrationBean.setOrder(3);
 
         return registrationBean;
