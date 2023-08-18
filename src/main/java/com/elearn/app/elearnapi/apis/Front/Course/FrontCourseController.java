@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.FrontCourseInListResponse;
+import com.elearn.app.elearnapi.apis.Front.Course.DTO.FrontCourseInListResponse;
+import com.elearn.app.elearnapi.apis.Front.Course.DTO.FrontCourseResponse;
 import com.elearn.app.elearnapi.modules.BooleanResponse;
 import com.elearn.app.elearnapi.modules.Course.Course;
 import com.elearn.app.elearnapi.modules.Course.CourseService;
@@ -66,6 +67,15 @@ public class FrontCourseController {
         List<Course> courses = this.courseService.getUserFavoriteCourses(user);
         List<FrontCourseInListResponse> courseResponses = this.courseService
                 .makeFrontCoursesInListResponse(user, courses);
+        return courseResponses;
+    }
+
+    @GetMapping(value = "/{courseId}")
+    public FrontCourseResponse getCourseDetails(@PathVariable String courseId, HttpServletRequest request) {
+        String id = (String) request.getAttribute("id");
+        User user = this.userService.checkFindById(id);
+        Course course = this.courseService.checkGetOneById(courseId);
+        FrontCourseResponse courseResponses = this.courseService.makeFrontCourseResponse(user, course);
         return courseResponses;
     }
 

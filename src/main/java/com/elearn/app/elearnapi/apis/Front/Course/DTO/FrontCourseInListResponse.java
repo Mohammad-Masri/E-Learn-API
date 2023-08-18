@@ -1,4 +1,4 @@
-package com.elearn.app.elearnapi.apis.Dashboard.Course.DTO;
+package com.elearn.app.elearnapi.apis.Front.Course.DTO;
 
 import com.elearn.app.elearnapi.modules.Course.Course;
 import com.elearn.app.elearnapi.modules.Course.DTO.CourseResponse;

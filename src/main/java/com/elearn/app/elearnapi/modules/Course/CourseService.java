@@ -13,8 +13,11 @@ import org.springframework.stereotype.Service;
 import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardCourseInListResponse;
 import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardCourseResponse;
 import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardLessonResponse;
-import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.FrontCourseInListResponse;
 import com.elearn.app.elearnapi.apis.Dashboard.Topic.DTO.DashboardTopicResponse;
+import com.elearn.app.elearnapi.apis.Front.Course.DTO.FrontCourseInListResponse;
+import com.elearn.app.elearnapi.apis.Front.Course.DTO.FrontCourseResponse;
+import com.elearn.app.elearnapi.apis.Front.Course.DTO.FrontLessonResponse;
+import com.elearn.app.elearnapi.apis.Front.Topic.DTO.FrontTopicResponse;
 import com.elearn.app.elearnapi.errors.HTTPServerError;
 import com.elearn.app.elearnapi.modules.CourseTopic.CourseTopicService;
 import com.elearn.app.elearnapi.modules.Lesson.LessonService;
@@ -141,6 +144,28 @@ public class CourseService {
             FrontCourseInListResponse dashboardCourseResponse = this
                     .makeFrontCourseInListResponse(user, courses.get(i));
             coursesResponse.add(dashboardCourseResponse);
+        }
+
+        return coursesResponse;
+    }
+
+    public FrontCourseResponse makeFrontCourseResponse(User user, Course course) {
+        Boolean isFavorite = this.userFavoriteCourseService.isCourseFavoriteByUser(user, course);
+        Boolean isPurchased = this.userPurchasedCourseService.isCoursePurchasedByUser(user, course);
+        List<Topic> topicsList = ArrayUtilities.convertSetToLinkedList(course.getTopics());
+        List<FrontTopicResponse> topics = this.topicService.makeFrontTopicsResponse(topicsList);
+        List<FrontLessonResponse> lessons = this.lessonService.makeFrontLessonsResponse(course.getLessons(), course,
+                user);
+        return new FrontCourseResponse(course, isFavorite, isPurchased, topics, lessons);
+    }
+
+    public List<FrontCourseResponse> makeFrontCoursesResponse(List<Course> courses, User user) {
+        List<FrontCourseResponse> coursesResponse = new LinkedList<>();
+
+        for (int i = 0; i < courses.size(); i++) {
+            FrontCourseResponse frontCourseResponse = this
+                    .makeFrontCourseResponse(user, courses.get(i));
+            coursesResponse.add(frontCourseResponse);
         }
 
         return coursesResponse;

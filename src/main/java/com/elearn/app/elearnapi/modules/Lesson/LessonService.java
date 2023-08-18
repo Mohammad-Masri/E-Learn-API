@@ -9,9 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardLessonResponse;
+import com.elearn.app.elearnapi.apis.Front.Course.DTO.FrontLessonResponse;
 import com.elearn.app.elearnapi.errors.HTTPServerError;
 import com.elearn.app.elearnapi.modules.Course.Course;
 import com.elearn.app.elearnapi.modules.Course.CourseService;
+import com.elearn.app.elearnapi.modules.User.User;
+import com.elearn.app.elearnapi.modules.UserPurchasedCourse.UserPurchasedCourse;
+import com.elearn.app.elearnapi.modules.UserPurchasedCourse.UserPurchasedCourseService;
 import com.elearn.app.elearnapi.utilities.ArrayUtilities;
 
 @Service
@@ -22,6 +26,9 @@ public class LessonService {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private UserPurchasedCourseService userPurchasedCourseService;
 
     public Lesson save(Lesson lesson) {
         return this.lessonRepository.save(lesson);
@@ -124,4 +131,22 @@ public class LessonService {
         return lessonsResponse;
     }
 
+    public FrontLessonResponse makeFrontLessonResponse(Lesson lesson, Course course, User user) {
+        Boolean isPurchased = false;
+        if (user != null) {
+            isPurchased = this.userPurchasedCourseService.isCoursePurchasedByUser(user, course);
+        }
+        return new FrontLessonResponse(lesson, isPurchased);
+    }
+
+    public List<FrontLessonResponse> makeFrontLessonsResponse(List<Lesson> lessons, Course course, User user) {
+        List<FrontLessonResponse> lessonsResponse = new LinkedList<>();
+
+        for (int i = 0; i < lessons.size(); i++) {
+            FrontLessonResponse frontLessonResponse = this.makeFrontLessonResponse(lessons.get(i), course, user);
+            lessonsResponse.add(frontLessonResponse);
+        }
+
+        return lessonsResponse;
+    }
 }
