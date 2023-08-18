@@ -8,6 +8,7 @@ public abstract class CourseResponse {
     private String title;
     private String description;
     private Double price;
+    private Boolean isFeatured;
 
     public CourseResponse() {
     }
@@ -18,6 +19,7 @@ public abstract class CourseResponse {
         this.title = course.getTitle();
         this.price = course.getPrice();
         this.description = course.getDescription();
+        this.isFeatured = course.getIsFeatured();
     }
 
     public Long getId() {
@@ -50,6 +52,14 @@ public abstract class CourseResponse {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getIsFeatured() {
+        return isFeatured;
+    }
+
+    public void setIsFeatured(Boolean isFeatured) {
+        this.isFeatured = isFeatured;
     }
 
 }

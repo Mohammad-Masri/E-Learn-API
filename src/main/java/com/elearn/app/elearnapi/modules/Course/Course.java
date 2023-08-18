@@ -32,6 +32,7 @@ public class Course {
     @Column(nullable = false)
     private String description;
     private Boolean isPublished;
+    private Boolean isFeatured;
 
     @Column(nullable = false)
     private Double price;
@@ -62,6 +63,7 @@ public class Course {
         this.price = price;
         this.topics = topics;
         this.isPublished = false;
+        this.isFeatured = false;
     }
 
     public Long getId() {
@@ -106,6 +108,14 @@ public class Course {
 
     public Boolean getIsPublished() {
         return isPublished;
+    }
+
+    public Boolean getIsFeatured() {
+        return isFeatured;
+    }
+
+    public void setIsFeatured(Boolean isFeatured) {
+        this.isFeatured = isFeatured;
     }
 
     public void setIsPublished(Boolean isPublished) {
