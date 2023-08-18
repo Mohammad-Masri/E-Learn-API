@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.elearn.app.elearnapi.modules.Lesson.Lesson;
 import com.elearn.app.elearnapi.modules.Topic.Topic;
+import com.elearn.app.elearnapi.modules.UserFavoriteCourse.UserFavoriteCourse;
 import com.elearn.app.elearnapi.modules.UserPurchasedCourse.UserPurchasedCourse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -44,6 +45,9 @@ public class Course {
 
     @OneToMany(mappedBy = "course")
     private List<UserPurchasedCourse> purchasedByUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course")
+    private List<UserFavoriteCourse> likedByUsers = new ArrayList<>();
 
     public Course() {
     }
@@ -123,6 +127,15 @@ public class Course {
 
     public void setPurchasedByUsers(List<UserPurchasedCourse> purchasedByUsers) {
         this.purchasedByUsers = purchasedByUsers;
+    }
+
+    @JsonIgnore
+    public List<UserFavoriteCourse> getLikedByUsers() {
+        return likedByUsers;
+    }
+
+    public void setLikedByUsers(List<UserFavoriteCourse> likedByUsers) {
+        this.likedByUsers = likedByUsers;
     }
 
     @Override

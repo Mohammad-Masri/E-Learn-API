@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.elearn.app.elearnapi.config.constants.UserRole;
+import com.elearn.app.elearnapi.modules.UserFavoriteCourse.UserFavoriteCourse;
 import com.elearn.app.elearnapi.modules.UserPurchasedCourse.UserPurchasedCourse;
 
 import jakarta.persistence.Column;
@@ -32,6 +33,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<UserPurchasedCourse> purchasedCourses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<UserFavoriteCourse> favoriteCourses = new ArrayList<>();
 
     public User() {
     }
@@ -93,6 +97,14 @@ public class User {
 
     public void setPurchasedCourses(List<UserPurchasedCourse> purchasedCourses) {
         this.purchasedCourses = purchasedCourses;
+    }
+
+    public List<UserFavoriteCourse> getFavoriteCourses() {
+        return favoriteCourses;
+    }
+
+    public void setFavoriteCourses(List<UserFavoriteCourse> favoriteCourses) {
+        this.favoriteCourses = favoriteCourses;
     }
 
     @Override
