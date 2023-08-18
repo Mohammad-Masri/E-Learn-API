@@ -21,6 +21,8 @@ import com.elearn.app.elearnapi.modules.Lesson.LessonService;
 import com.elearn.app.elearnapi.modules.Topic.Topic;
 import com.elearn.app.elearnapi.modules.Topic.TopicService;
 import com.elearn.app.elearnapi.modules.User.User;
+import com.elearn.app.elearnapi.modules.UserFavoriteCourse.UserFavoriteCourse;
+import com.elearn.app.elearnapi.modules.UserFavoriteCourse.UserFavoriteCourseService;
 import com.elearn.app.elearnapi.modules.UserPurchasedCourse.UserPurchasedCourse;
 import com.elearn.app.elearnapi.modules.UserPurchasedCourse.UserPurchasedCourseService;
 import com.elearn.app.elearnapi.utilities.ArrayUtilities;
@@ -42,6 +44,8 @@ public class CourseService {
 
     @Autowired
     private UserPurchasedCourseService userPurchasedCourseService;
+    @Autowired
+    private UserFavoriteCourseService userFavoriteCourseService;
 
     public List<Course> getAll() {
         List<Course> courses = new ArrayList<>();
@@ -116,7 +120,7 @@ public class CourseService {
     }
 
     public FrontCourseInListResponse makeFrontCourseInListResponse(User user, Course course) {
-        Boolean isFavorite = false;
+        Boolean isFavorite = this.userFavoriteCourseService.isCourseFavoriteByUser(user, course);
         Boolean isPurchased = this.userPurchasedCourseService.isCoursePurchasedByUser(user, course);
         return new FrontCourseInListResponse(course, isFavorite, isPurchased);
     }
