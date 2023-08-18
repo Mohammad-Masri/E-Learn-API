@@ -1,5 +1,6 @@
 package com.elearn.app.elearnapi.apis.Dashboard.Course.DTO;
 
+import com.elearn.app.elearnapi.modules.Asset.DTO.AssetResponse;
 import com.elearn.app.elearnapi.modules.Lesson.Lesson;
 import com.elearn.app.elearnapi.modules.Lesson.DTO.LessonResponse;
 
@@ -12,8 +13,8 @@ public class DashboardLessonResponse extends LessonResponse {
         super();
     }
 
-    public DashboardLessonResponse(Lesson lesson) {
-        super(lesson);
+    public DashboardLessonResponse(Lesson lesson, AssetResponse asset) {
+        super(lesson, asset);
         this.isFree = lesson.getIsFree();
         this.isPublished = lesson.getIsPublished();
     }

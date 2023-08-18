@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.elearn.app.elearnapi.modules.Asset.Asset;
 import com.elearn.app.elearnapi.modules.Lesson.Lesson;
 import com.elearn.app.elearnapi.modules.Topic.Topic;
 import com.elearn.app.elearnapi.modules.UserFavoriteCourse.UserFavoriteCourse;
@@ -20,6 +21,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Course {
@@ -33,6 +35,10 @@ public class Course {
     private String description;
     private Boolean isPublished;
     private Boolean isFeatured;
+
+    @OneToOne
+    @JoinColumn(name = "asset_id")
+    private Asset image;
 
     @Column(nullable = false)
     private Double price;
@@ -57,11 +63,13 @@ public class Course {
             String title,
             String description,
             Double price,
+            Asset image,
             Set<Topic> topics) {
         this.title = title;
         this.description = description;
         this.price = price;
         this.topics = topics;
+        this.image = image;
         this.isPublished = false;
         this.isFeatured = false;
     }
@@ -100,6 +108,14 @@ public class Course {
 
     public Set<Topic> getTopics() {
         return topics;
+    }
+
+    public Asset getImage() {
+        return image;
+    }
+
+    public void setImage(Asset image) {
+        this.image = image;
     }
 
     public void setTopics(Set<Topic> topics) {

@@ -1,6 +1,5 @@
 package com.elearn.app.elearnapi.modules.Lesson;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,10 +10,12 @@ import org.springframework.stereotype.Service;
 import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardLessonResponse;
 import com.elearn.app.elearnapi.apis.Front.Course.DTO.FrontLessonResponse;
 import com.elearn.app.elearnapi.errors.HTTPServerError;
+import com.elearn.app.elearnapi.modules.Asset.Asset;
+import com.elearn.app.elearnapi.modules.Asset.AssetService;
+import com.elearn.app.elearnapi.modules.Asset.DTO.AssetResponse;
 import com.elearn.app.elearnapi.modules.Course.Course;
 import com.elearn.app.elearnapi.modules.Course.CourseService;
 import com.elearn.app.elearnapi.modules.User.User;
-import com.elearn.app.elearnapi.modules.UserPurchasedCourse.UserPurchasedCourse;
 import com.elearn.app.elearnapi.modules.UserPurchasedCourse.UserPurchasedCourseService;
 import com.elearn.app.elearnapi.utilities.ArrayUtilities;
 
@@ -26,6 +27,9 @@ public class LessonService {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private AssetService assetService;
 
     @Autowired
     private UserPurchasedCourseService userPurchasedCourseService;
@@ -62,11 +66,12 @@ public class LessonService {
         return lesson;
     }
 
-    public Lesson create(String courseId, String title, String description, String URL) {
+    public Lesson create(String courseId, String title, String description, String assetId) {
         Course course = this.courseService.checkGetOneById(courseId);
         List<Lesson> lessons = course.getLessons();
         int number = lessons.size() + 1;
-        Lesson lesson = new Lesson(number, title, description, URL, course);
+        Asset video = this.assetService.checkGetOneById(assetId);
+        Lesson lesson = new Lesson(number, title, description, video, course);
         lesson = this.save(lesson);
         return lesson;
     }
@@ -74,13 +79,14 @@ public class LessonService {
     public Lesson update(String id, Course course,
             String title,
             String description,
-            String url) {
+            String assetId) {
 
+        Asset video = this.assetService.checkGetOneById(assetId);
         Lesson lesson = this.checkGetOneByIdInCourse(id, course);
 
         lesson.setTitle(title);
         lesson.setDescription(description);
-        lesson.setURL(url);
+        lesson.setVideo(video);
 
         lesson = this.save(lesson);
 
@@ -117,7 +123,8 @@ public class LessonService {
     }
 
     public DashboardLessonResponse makeDashboardLessonResponse(Lesson lesson) {
-        return new DashboardLessonResponse(lesson);
+        AssetResponse video = this.assetService.makeAssetResponse(lesson.getVideo());
+        return new DashboardLessonResponse(lesson, video);
     }
 
     public List<DashboardLessonResponse> makeDashboardLessonsResponse(List<Lesson> lessons) {
@@ -136,7 +143,8 @@ public class LessonService {
         if (user != null) {
             isPurchased = this.userPurchasedCourseService.isCoursePurchasedByUser(user, course);
         }
-        return new FrontLessonResponse(lesson, isPurchased);
+        AssetResponse video = this.assetService.makeAssetResponse(lesson.getVideo());
+        return new FrontLessonResponse(lesson, video, isPurchased);
     }
 
     public List<FrontLessonResponse> makeFrontLessonsResponse(List<Lesson> lessons, Course course, User user) {

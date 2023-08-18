@@ -1,5 +1,6 @@
 package com.elearn.app.elearnapi.modules.Lesson.DTO;
 
+import com.elearn.app.elearnapi.modules.Asset.DTO.AssetResponse;
 import com.elearn.app.elearnapi.modules.Lesson.Lesson;
 
 public abstract class LessonResponse {
@@ -8,18 +9,18 @@ public abstract class LessonResponse {
     private int number;
     private String title;
     private String description;
-    private String URL;
+    private AssetResponse video;
 
     public LessonResponse() {
     }
 
-    public LessonResponse(Lesson lesson) {
+    public LessonResponse(Lesson lesson, AssetResponse video) {
 
         this.id = lesson.getId();
         this.number = lesson.getNumber();
         this.title = lesson.getTitle();
         this.description = lesson.getDescription();
-        this.URL = lesson.getURL();
+        this.video = video;
     }
 
     public Long getId() {
@@ -54,12 +55,12 @@ public abstract class LessonResponse {
         this.number = number;
     }
 
-    public String getURL() {
-        return URL;
+    public AssetResponse getVideo() {
+        return video;
     }
 
-    public void setURL(String uRL) {
-        URL = uRL;
+    public void setVideo(AssetResponse video) {
+        this.video = video;
     }
 
 }

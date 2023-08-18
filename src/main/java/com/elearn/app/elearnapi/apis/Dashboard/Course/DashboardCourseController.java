@@ -48,6 +48,7 @@ public class DashboardCourseController {
     @PostMapping
     public DashboardCourseInListResponse createNewCourse(@RequestBody CreateCourseBody body) {
         Course course = this.courseService.create(body.getTitle(), body.getDescription(), body.getPrice(),
+                body.getAssetId(),
                 body.getTopicIds());
         DashboardCourseInListResponse courseResponse = this.courseService.makeDashboardCourseInListResponse(course);
 
@@ -57,6 +58,7 @@ public class DashboardCourseController {
     @PutMapping("/{id}")
     public DashboardCourseInListResponse updateCourse(@PathVariable String id, @RequestBody CreateCourseBody body) {
         Course course = this.courseService.update(id, body.getTitle(), body.getDescription(), body.getPrice(),
+                body.getAssetId(),
                 body.getTopicIds());
         DashboardCourseInListResponse courseResponse = this.courseService.makeDashboardCourseInListResponse(course);
 
@@ -89,7 +91,7 @@ public class DashboardCourseController {
 
     @PostMapping("/{courseId}/lessons")
     public DashboardLessonResponse createLesson(@PathVariable String courseId, @RequestBody CreateLessonBody body) {
-        Lesson lesson = this.lessonService.create(courseId, body.getTitle(), body.getDescription(), body.getUrl());
+        Lesson lesson = this.lessonService.create(courseId, body.getTitle(), body.getDescription(), body.getAssetId());
         DashboardLessonResponse lessonResponse = this.lessonService.makeDashboardLessonResponse(lesson);
         return lessonResponse;
     }
@@ -115,7 +117,7 @@ public class DashboardCourseController {
             @RequestBody CreateLessonBody body) {
         Course course = this.courseService.checkGetOneById(courseId);
         Lesson lesson = this.lessonService.update(lessonId, course, body.getTitle(), body.getDescription(),
-                body.getUrl());
+                body.getAssetId());
         DashboardLessonResponse lessonResponse = this.lessonService.makeDashboardLessonResponse(lesson);
         return lessonResponse;
     }

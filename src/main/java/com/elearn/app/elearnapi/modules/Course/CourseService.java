@@ -19,6 +19,8 @@ import com.elearn.app.elearnapi.apis.Front.Course.DTO.FrontCourseResponse;
 import com.elearn.app.elearnapi.apis.Front.Course.DTO.FrontLessonResponse;
 import com.elearn.app.elearnapi.apis.Front.Topic.DTO.FrontTopicResponse;
 import com.elearn.app.elearnapi.errors.HTTPServerError;
+import com.elearn.app.elearnapi.modules.Asset.Asset;
+import com.elearn.app.elearnapi.modules.Asset.AssetService;
 import com.elearn.app.elearnapi.modules.CourseTopic.CourseTopicService;
 import com.elearn.app.elearnapi.modules.Lesson.LessonService;
 import com.elearn.app.elearnapi.modules.Topic.Topic;
@@ -44,6 +46,8 @@ public class CourseService {
 
     @Autowired
     private LessonService lessonService;
+    @Autowired
+    private AssetService assetService;
 
     @Autowired
     private UserPurchasedCourseService userPurchasedCourseService;
@@ -92,19 +96,22 @@ public class CourseService {
         return courses;
     }
 
-    public Course create(String title, String description, Double price, String[] topicIds) {
+    public Course create(String title, String description, Double price, String assetId, String[] topicIds) {
         Set<Topic> topics = this.topicService.getAllByIds(topicIds);
-        Course course = new Course(title, description, price, topics);
+        Asset asset = this.assetService.checkGetOneById(assetId);
+        Course course = new Course(title, description, price, asset, topics);
         course = this.courseRepository.save(course);
         return course;
     }
 
-    public Course update(String id, String title, String description, Double price, String[] topicIds) {
+    public Course update(String id, String title, String description, Double price, String assetId, String[] topicIds) {
         Course course = this.checkGetOneById(id);
         Set<Topic> topics = this.topicService.getAllByIds(topicIds);
+        Asset asset = this.assetService.checkGetOneById(assetId);
         course.setTitle(title);
         course.setDescription(description);
         course.setPrice(price);
+        course.setImage(asset);
         course.setTopics(topics);
 
         course = this.courseRepository.save(course);

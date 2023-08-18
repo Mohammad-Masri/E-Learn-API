@@ -1,5 +1,6 @@
 package com.elearn.app.elearnapi.apis.Front.Course.DTO;
 
+import com.elearn.app.elearnapi.modules.Asset.DTO.AssetResponse;
 import com.elearn.app.elearnapi.modules.Lesson.Lesson;
 import com.elearn.app.elearnapi.modules.Lesson.DTO.LessonResponse;
 
@@ -11,11 +12,11 @@ public class FrontLessonResponse extends LessonResponse {
         super();
     }
 
-    public FrontLessonResponse(Lesson lesson, Boolean isPurchased) {
-        super(lesson);
+    public FrontLessonResponse(Lesson lesson, AssetResponse asset, Boolean isPurchased) {
+        super(lesson, asset);
         this.isFree = lesson.getIsFree();
         if (!isPurchased && !lesson.getIsFree()) {
-            setURL(null);
+            setVideo(null);
         }
 
     }
