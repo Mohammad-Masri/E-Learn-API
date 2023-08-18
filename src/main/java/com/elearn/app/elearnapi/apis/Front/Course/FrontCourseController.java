@@ -59,6 +59,16 @@ public class FrontCourseController {
         return courseResponses;
     }
 
+    @GetMapping(value = "/favorite")
+    public List<FrontCourseInListResponse> getMyFavoriteCourses(HttpServletRequest request) {
+        String id = (String) request.getAttribute("id");
+        User user = this.userService.checkFindById(id);
+        List<Course> courses = this.courseService.getUserFavoriteCourses(user);
+        List<FrontCourseInListResponse> courseResponses = this.courseService
+                .makeFrontCoursesInListResponse(user, courses);
+        return courseResponses;
+    }
+
     @PostMapping(value = "/{courseId}/pay")
     public BooleanResponse payACourse(@PathVariable String courseId, HttpServletRequest request) {
 

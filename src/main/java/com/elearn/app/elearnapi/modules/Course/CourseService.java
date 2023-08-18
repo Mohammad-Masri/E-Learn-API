@@ -80,6 +80,15 @@ public class CourseService {
         return courses;
     }
 
+    public List<Course> getUserFavoriteCourses(User user) {
+        List<UserFavoriteCourse> userFavoriteCourses = user.getFavoriteCourses();
+        List<Course> courses = new ArrayList<>();
+        for (UserFavoriteCourse ufc : userFavoriteCourses) {
+            courses.add(ufc.getCourse());
+        }
+        return courses;
+    }
+
     public Course create(String title, String description, Double price, String[] topicIds) {
         Set<Topic> topics = this.topicService.getAllByIds(topicIds);
         Course course = new Course(title, description, price, topics);
