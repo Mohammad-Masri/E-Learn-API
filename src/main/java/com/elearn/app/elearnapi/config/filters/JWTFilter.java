@@ -62,7 +62,7 @@ public class JWTFilter extends OncePerRequestFilter {
             // Check if the requested URL is in the optional auth list
             boolean optionalAuth = false;
             for (String optionalUrl : OPTIONAL_AUTH_URLS) {
-                if (requestURI.startsWith(optionalUrl)) {
+                if (requestURI.equals(optionalUrl)) {
                     optionalAuth = true;
                     break;
                 }
