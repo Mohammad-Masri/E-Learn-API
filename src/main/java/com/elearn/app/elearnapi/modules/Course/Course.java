@@ -8,6 +8,7 @@ import java.util.Set;
 import com.elearn.app.elearnapi.modules.Lesson.Lesson;
 import com.elearn.app.elearnapi.modules.Topic.Topic;
 import com.elearn.app.elearnapi.modules.UserPurchasedCourse.UserPurchasedCourse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -115,6 +116,7 @@ public class Course {
         this.lessons = lessons;
     }
 
+    @JsonIgnore
     public List<UserPurchasedCourse> getPurchasedByUsers() {
         return purchasedByUsers;
     }

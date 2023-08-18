@@ -6,6 +6,7 @@ import java.time.ZoneOffset;
 import com.elearn.app.elearnapi.modules.Course.Course;
 import com.elearn.app.elearnapi.modules.PaymentTransaction.PaymentTransaction;
 import com.elearn.app.elearnapi.modules.User.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -58,6 +59,7 @@ public class UserPurchasedCourse {
         this.id = id;
     }
 
+    @JsonIgnore
     public Course getCourse() {
         return course;
     }
@@ -66,6 +68,7 @@ public class UserPurchasedCourse {
         this.course = course;
     }
 
+    @JsonIgnore
     public User getUser() {
         return user;
     }

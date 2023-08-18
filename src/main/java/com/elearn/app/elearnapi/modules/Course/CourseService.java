@@ -20,6 +20,9 @@ import com.elearn.app.elearnapi.modules.CourseTopic.CourseTopicService;
 import com.elearn.app.elearnapi.modules.Lesson.LessonService;
 import com.elearn.app.elearnapi.modules.Topic.Topic;
 import com.elearn.app.elearnapi.modules.Topic.TopicService;
+import com.elearn.app.elearnapi.modules.User.User;
+import com.elearn.app.elearnapi.modules.UserPurchasedCourse.UserPurchasedCourse;
+import com.elearn.app.elearnapi.modules.UserPurchasedCourse.UserPurchasedCourseService;
 import com.elearn.app.elearnapi.utilities.ArrayUtilities;
 
 @Service
@@ -36,6 +39,9 @@ public class CourseService {
 
     @Autowired
     private LessonService lessonService;
+
+    @Autowired
+    private UserPurchasedCourseService userPurchasedCourseService;
 
     public List<Course> getAll() {
         List<Course> courses = new ArrayList<>();
@@ -58,6 +64,15 @@ public class CourseService {
 
     public List<Course> getAllInTopic(String topicId) {
         List<Course> courses = this.courseRepository.findByTopics_Id(topicId);
+        return courses;
+    }
+
+    public List<Course> getUserCourses(User user) {
+        List<UserPurchasedCourse> userPurchasedCourses = user.getPurchasedCourses();
+        List<Course> courses = new ArrayList<>();
+        for (UserPurchasedCourse upc : userPurchasedCourses) {
+            courses.add(upc.getCourse());
+        }
         return courses;
     }
 

@@ -1,5 +1,6 @@
 package com.elearn.app.elearnapi.apis.Front.Course;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import com.elearn.app.elearnapi.modules.User.User;
 import com.elearn.app.elearnapi.modules.User.UserService;
 import com.elearn.app.elearnapi.modules.UserPurchasedCourse.UserPurchasedCourse;
 import com.elearn.app.elearnapi.modules.UserPurchasedCourse.UserPurchasedCourseService;
+import com.elearn.app.elearnapi.utilities.PrintUtilities;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -37,6 +39,16 @@ public class FrontCourseController {
     @GetMapping
     public List<FrontCourseInListResponse> getAllCourses() {
         List<Course> courses = this.courseService.getAll();
+        List<FrontCourseInListResponse> courseResponses = this.courseService
+                .makeFrontCoursesInListResponse(courses);
+        return courseResponses;
+    }
+
+    @GetMapping(value = "/mine")
+    public List<FrontCourseInListResponse> getMyCourses(HttpServletRequest request) {
+        String id = (String) request.getAttribute("id");
+        User user = this.userService.checkFindById(id);
+        List<Course> courses = this.courseService.getUserCourses(user);
         List<FrontCourseInListResponse> courseResponses = this.courseService
                 .makeFrontCoursesInListResponse(courses);
         return courseResponses;
