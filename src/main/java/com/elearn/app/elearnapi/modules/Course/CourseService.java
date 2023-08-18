@@ -54,6 +54,10 @@ public class CourseService {
     @Autowired
     private UserFavoriteCourseService userFavoriteCourseService;
 
+    public Course save(Course course) {
+        return this.courseRepository.save(course);
+    }
+
     public List<Course> getAll() {
         List<Course> courses = new ArrayList<>();
         this.courseRepository.findAll().forEach(courses::add);
@@ -63,6 +67,11 @@ public class CourseService {
     public Course getOneById(String id) {
         Course course = this.courseRepository.findById(id).orElse(null);
         return course;
+    }
+
+    public List<Course> findByAssetImage(Asset image) {
+        List<Course> courses = this.courseRepository.findByImage(image);
+        return courses;
     }
 
     public Course checkGetOneById(String id) {
@@ -100,7 +109,7 @@ public class CourseService {
         Set<Topic> topics = this.topicService.getAllByIds(topicIds);
         Asset asset = this.assetService.checkGetOneById(assetId);
         Course course = new Course(title, description, price, asset, topics);
-        course = this.courseRepository.save(course);
+        course = this.save(course);
         return course;
     }
 
@@ -114,7 +123,7 @@ public class CourseService {
         course.setImage(asset);
         course.setTopics(topics);
 
-        course = this.courseRepository.save(course);
+        course = this.save(course);
 
         return course;
     }
@@ -129,7 +138,7 @@ public class CourseService {
     public Course toggleIsFeatured(String id) {
         Course course = this.checkGetOneById(id);
         course.setIsFeatured(!course.getIsFeatured());
-        course = this.courseRepository.save(course);
+        course = this.save(course);
         return course;
     }
 

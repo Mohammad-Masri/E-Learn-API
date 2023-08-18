@@ -66,6 +66,10 @@ public class LessonService {
         return lesson;
     }
 
+    public List<Lesson> findByAssetVideo(Asset video) {
+        return this.lessonRepository.findByVideo(video);
+    }
+
     public Lesson create(String courseId, String title, String description, String assetId) {
         Course course = this.courseService.checkGetOneById(courseId);
         List<Lesson> lessons = course.getLessons();
