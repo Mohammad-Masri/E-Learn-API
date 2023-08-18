@@ -71,6 +71,14 @@ public class DashboardCourseController {
         return courseResponse;
     }
 
+    @PutMapping("/{id}/is-featured")
+    public DashboardCourseInListResponse toggleIsFeatured(@PathVariable String id) {
+        Course course = this.courseService.toggleIsFeatured(id);
+        DashboardCourseInListResponse courseResponse = this.courseService.makeDashboardCourseInListResponse(course);
+
+        return courseResponse;
+    }
+
     @DeleteMapping("/{id}")
     public DashboardCourseInListResponse deleteCrouse(@PathVariable String id) {
         Course course = this.courseService.delete(id);

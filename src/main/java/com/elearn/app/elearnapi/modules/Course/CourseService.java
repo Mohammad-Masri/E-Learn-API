@@ -119,6 +119,13 @@ public class CourseService {
         return course;
     }
 
+    public Course toggleIsFeatured(String id) {
+        Course course = this.checkGetOneById(id);
+        course.setIsFeatured(!course.getIsFeatured());
+        course = this.courseRepository.save(course);
+        return course;
+    }
+
     public Course delete(String id) {
         Course course = this.checkGetOneById(id);
         this.courseTopicService.deleteRelatedCourseTopicForThisCourse(course);
