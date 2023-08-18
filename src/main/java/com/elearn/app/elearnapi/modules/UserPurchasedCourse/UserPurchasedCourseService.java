@@ -25,7 +25,16 @@ public class UserPurchasedCourseService {
     }
 
     public UserPurchasedCourse findByUserIdAndCourseId(User user, Course course) {
+        if (user == null || course == null)
+            return null;
         return this.userPurchasedCourseRepository.findByUserIdAndCourseId(user.getId(), course.getId());
+    }
+
+    public Boolean isCoursePurchasedByUser(User user, Course course) {
+        UserPurchasedCourse userPurchasedCourse = this.findByUserIdAndCourseId(user, course);
+        if (userPurchasedCourse == null)
+            return false;
+        return true;
     }
 
     public UserPurchasedCourse checkIsUserAlreadyPayThisCourse(User user, Course course) {

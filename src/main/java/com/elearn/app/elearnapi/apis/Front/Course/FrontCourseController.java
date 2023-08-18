@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.FrontCourseInListResponse;
+import com.elearn.app.elearnapi.modules.BooleanResponse;
 import com.elearn.app.elearnapi.modules.Course.Course;
 import com.elearn.app.elearnapi.modules.Course.CourseService;
 import com.elearn.app.elearnapi.modules.PaymentTransaction.PaymentTransaction;
@@ -37,10 +38,12 @@ public class FrontCourseController {
     private UserPurchasedCourseService userPurchasedCourseService;
 
     @GetMapping
-    public List<FrontCourseInListResponse> getAllCourses() {
+    public List<FrontCourseInListResponse> getAllCourses(HttpServletRequest request) {
+        String id = (String) request.getAttribute("id");
+        User user = this.userService.findById(id);
         List<Course> courses = this.courseService.getAll();
         List<FrontCourseInListResponse> courseResponses = this.courseService
-                .makeFrontCoursesInListResponse(courses);
+                .makeFrontCoursesInListResponse(user, courses);
         return courseResponses;
     }
 
@@ -50,12 +53,12 @@ public class FrontCourseController {
         User user = this.userService.checkFindById(id);
         List<Course> courses = this.courseService.getUserCourses(user);
         List<FrontCourseInListResponse> courseResponses = this.courseService
-                .makeFrontCoursesInListResponse(courses);
+                .makeFrontCoursesInListResponse(user, courses);
         return courseResponses;
     }
 
     @PostMapping(value = "/{courseId}/pay")
-    public Boolean payACourse(@PathVariable String courseId, HttpServletRequest request) {
+    public BooleanResponse payACourse(@PathVariable String courseId, HttpServletRequest request) {
 
         String id = (String) request.getAttribute("id");
         User user = this.userService.checkFindById(id);
@@ -66,8 +69,8 @@ public class FrontCourseController {
 
         PaymentTransaction transaction = this.paymentTransactionService.create(course);
 
-        UserPurchasedCourse userPurchasedCourse = this.userPurchasedCourseService.create(user, course, transaction);
+        this.userPurchasedCourseService.create(user, course, transaction);
 
-        return true;
+        return new BooleanResponse(true);
     }
 }

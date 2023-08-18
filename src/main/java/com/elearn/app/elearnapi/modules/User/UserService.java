@@ -22,6 +22,8 @@ public class UserService {
     private UserRepository userRepository;
 
     public User findById(String id) {
+        if (id == null)
+            return null;
         User user = this.userRepository.findById(id).orElse(null);
         return user;
     }

@@ -115,18 +115,18 @@ public class CourseService {
         return course;
     }
 
-    public FrontCourseInListResponse makeFrontCourseInListResponse(Course course) {
+    public FrontCourseInListResponse makeFrontCourseInListResponse(User user, Course course) {
         Boolean isFavorite = false;
-        Boolean isPurchased = false;
+        Boolean isPurchased = this.userPurchasedCourseService.isCoursePurchasedByUser(user, course);
         return new FrontCourseInListResponse(course, isFavorite, isPurchased);
     }
 
-    public List<FrontCourseInListResponse> makeFrontCoursesInListResponse(List<Course> courses) {
+    public List<FrontCourseInListResponse> makeFrontCoursesInListResponse(User user, List<Course> courses) {
         List<FrontCourseInListResponse> coursesResponse = new LinkedList<>();
 
         for (int i = 0; i < courses.size(); i++) {
             FrontCourseInListResponse dashboardCourseResponse = this
-                    .makeFrontCourseInListResponse(courses.get(i));
+                    .makeFrontCourseInListResponse(user, courses.get(i));
             coursesResponse.add(dashboardCourseResponse);
         }
 
