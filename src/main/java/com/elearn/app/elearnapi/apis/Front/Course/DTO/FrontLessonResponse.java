@@ -12,8 +12,8 @@ public class FrontLessonResponse extends LessonResponse {
         super();
     }
 
-    public FrontLessonResponse(Lesson lesson, AssetResponse asset, Boolean isPurchased) {
-        super(lesson, asset);
+    public FrontLessonResponse(Lesson lesson, AssetResponse asset, Boolean isPurchased, int number) {
+        super(lesson, asset, number);
         this.isFree = lesson.getIsFree();
         if (!isPurchased && !lesson.getIsFree()) {
             setVideo(null);

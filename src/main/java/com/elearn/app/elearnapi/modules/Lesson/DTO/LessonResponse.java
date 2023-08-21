@@ -23,6 +23,15 @@ public abstract class LessonResponse {
         this.video = video;
     }
 
+    public LessonResponse(Lesson lesson, AssetResponse video, int number) {
+
+        this.id = lesson.getId();
+        this.number = number;
+        this.title = lesson.getTitle();
+        this.description = lesson.getDescription();
+        this.video = video;
+    }
+
     public Long getId() {
         return id;
     }

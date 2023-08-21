@@ -65,7 +65,8 @@ class CreateLessonBody {
     public CreateLessonBody(
             String title,
             String description,
-            String url) {
+            String url,
+            String assetId) {
         this.title = title;
         this.description = description;
         this.assetId = assetId;

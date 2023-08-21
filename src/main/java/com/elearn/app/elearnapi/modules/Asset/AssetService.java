@@ -52,6 +52,8 @@ public class AssetService {
     }
 
     public Asset getOneById(String id) {
+        if (id == null)
+            return null;
         Asset asset = this.assetRepository.findById(id).orElse(null);
         return asset;
     }
@@ -65,6 +67,8 @@ public class AssetService {
     }
 
     public AssetResponse makeAssetResponse(Asset asset) {
+        if (asset == null)
+            return null;
         return new AssetResponse(asset);
     }
 
@@ -89,4 +93,10 @@ public class AssetService {
         return asset;
     }
 
+    public void checkTypeOfAsset(Asset asset, AssetType type) {
+        if (!asset.getType().toString().equals(type.toString())) {
+            throw new HTTPServerError(HttpStatus.BAD_REQUEST, String.format(
+                    "the type of asset is ( %s ),it should be ( %s )", asset.getType().toString(), type.toString()));
+        }
+    }
 }

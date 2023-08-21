@@ -1,5 +1,6 @@
 package com.elearn.app.elearnapi.modules.Course.DTO;
 
+import com.elearn.app.elearnapi.modules.Asset.DTO.AssetResponse;
 import com.elearn.app.elearnapi.modules.Course.Course;
 
 public abstract class CourseResponse {
@@ -9,17 +10,20 @@ public abstract class CourseResponse {
     private String description;
     private Double price;
     private Boolean isFeatured;
+    private AssetResponse image;
 
     public CourseResponse() {
     }
 
     public CourseResponse(
-            Course course) {
+            Course course,
+            AssetResponse image) {
         this.id = course.getId();
         this.title = course.getTitle();
         this.price = course.getPrice();
         this.description = course.getDescription();
         this.isFeatured = course.getIsFeatured();
+        this.image = image;
     }
 
     public Long getId() {
@@ -60,6 +64,14 @@ public abstract class CourseResponse {
 
     public void setIsFeatured(Boolean isFeatured) {
         this.isFeatured = isFeatured;
+    }
+
+    public AssetResponse getImage() {
+        return image;
+    }
+
+    public void setImage(AssetResponse image) {
+        this.image = image;
     }
 
 }

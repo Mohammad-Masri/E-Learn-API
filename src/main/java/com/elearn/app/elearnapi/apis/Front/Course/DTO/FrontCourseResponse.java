@@ -3,6 +3,7 @@ package com.elearn.app.elearnapi.apis.Front.Course.DTO;
 import java.util.List;
 
 import com.elearn.app.elearnapi.apis.Front.Topic.DTO.FrontTopicResponse;
+import com.elearn.app.elearnapi.modules.Asset.DTO.AssetResponse;
 import com.elearn.app.elearnapi.modules.Course.Course;
 
 public class FrontCourseResponse extends FrontCourseInListResponse {
@@ -15,8 +16,8 @@ public class FrontCourseResponse extends FrontCourseInListResponse {
     }
 
     public FrontCourseResponse(Course course, Boolean isFavorite, Boolean isPurchased, List<FrontTopicResponse> topics,
-            List<FrontLessonResponse> lessons) {
-        super(course, isFavorite, isPurchased);
+            List<FrontLessonResponse> lessons, AssetResponse asset) {
+        super(course, isFavorite, isPurchased, asset);
         this.lessons = lessons;
         this.topics = topics;
     }

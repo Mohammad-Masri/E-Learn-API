@@ -21,7 +21,9 @@ import com.elearn.app.elearnapi.apis.Front.Topic.DTO.FrontTopicResponse;
 import com.elearn.app.elearnapi.errors.HTTPServerError;
 import com.elearn.app.elearnapi.modules.Asset.Asset;
 import com.elearn.app.elearnapi.modules.Asset.AssetService;
+import com.elearn.app.elearnapi.modules.Asset.DTO.AssetResponse;
 import com.elearn.app.elearnapi.modules.CourseTopic.CourseTopicService;
+import com.elearn.app.elearnapi.modules.Lesson.Lesson;
 import com.elearn.app.elearnapi.modules.Lesson.LessonService;
 import com.elearn.app.elearnapi.modules.Topic.Topic;
 import com.elearn.app.elearnapi.modules.Topic.TopicService;
@@ -64,6 +66,12 @@ public class CourseService {
         return courses;
     }
 
+    public List<Course> getAllIsPublished() {
+        List<Course> courses = new ArrayList<>();
+        this.courseRepository.findAllByIsPublished(true).forEach(courses::add);
+        return courses;
+    }
+
     public Course getOneById(String id) {
         Course course = this.courseRepository.findById(id).orElse(null);
         return course;
@@ -79,6 +87,15 @@ public class CourseService {
         if (course == null) {
             throw new HTTPServerError(HttpStatus.NOT_FOUND, String.format("course with id %s is not found", id));
         }
+        return course;
+    }
+
+    public Course checkGetOneByIdForFront(String id) {
+        Course course = this.getOneById(id);
+        if (course == null || !course.getIsPublished()) {
+            throw new HTTPServerError(HttpStatus.NOT_FOUND, String.format("course with id %s is not found", id));
+        }
+
         return course;
     }
 
@@ -157,7 +174,8 @@ public class CourseService {
     public FrontCourseInListResponse makeFrontCourseInListResponse(User user, Course course) {
         Boolean isFavorite = this.userFavoriteCourseService.isCourseFavoriteByUser(user, course);
         Boolean isPurchased = this.userPurchasedCourseService.isCoursePurchasedByUser(user, course);
-        return new FrontCourseInListResponse(course, isFavorite, isPurchased);
+        AssetResponse asset = this.assetService.makeAssetResponse(course.getImage());
+        return new FrontCourseInListResponse(course, isFavorite, isPurchased, asset);
     }
 
     public List<FrontCourseInListResponse> makeFrontCoursesInListResponse(User user, List<Course> courses) {
@@ -177,9 +195,12 @@ public class CourseService {
         Boolean isPurchased = this.userPurchasedCourseService.isCoursePurchasedByUser(user, course);
         List<Topic> topicsList = ArrayUtilities.convertSetToLinkedList(course.getTopics());
         List<FrontTopicResponse> topics = this.topicService.makeFrontTopicsResponse(topicsList);
-        List<FrontLessonResponse> lessons = this.lessonService.makeFrontLessonsResponse(course.getLessons(), course,
+        List<Lesson> lessons = this.lessonService.getPublishedLessonsForCourse(course);
+        List<FrontLessonResponse> lessonsResponse = this.lessonService.makeFrontLessonsResponse(lessons, course,
                 user);
-        return new FrontCourseResponse(course, isFavorite, isPurchased, topics, lessons);
+
+        AssetResponse asset = this.assetService.makeAssetResponse(course.getImage());
+        return new FrontCourseResponse(course, isFavorite, isPurchased, topics, lessonsResponse, asset);
     }
 
     public List<FrontCourseResponse> makeFrontCoursesResponse(List<Course> courses, User user) {
@@ -195,7 +216,8 @@ public class CourseService {
     }
 
     public DashboardCourseInListResponse makeDashboardCourseInListResponse(Course course) {
-        return new DashboardCourseInListResponse(course);
+        AssetResponse asset = this.assetService.makeAssetResponse(course.getImage());
+        return new DashboardCourseInListResponse(course, asset);
     }
 
     public List<DashboardCourseInListResponse> makeDashboardCoursesInListResponse(List<Course> courses) {
@@ -215,7 +237,8 @@ public class CourseService {
         List<DashboardTopicResponse> topicResponses = this.topicService.makeDashboardTopicsResponse(topicsList);
 
         List<DashboardLessonResponse> lessons = this.lessonService.makeDashboardLessonsResponse(course.getLessons());
-        return new DashboardCourseResponse(course, topicResponses, lessons);
+        AssetResponse asset = this.assetService.makeAssetResponse(course.getImage());
+        return new DashboardCourseResponse(course, topicResponses, lessons, asset);
     }
 
     public List<DashboardCourseResponse> makeDashboardCoursesResponse(List<Course> courses) {

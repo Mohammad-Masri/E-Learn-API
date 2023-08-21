@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.elearn.app.elearnapi.apis.Dashboard.Course.DTO.DashboardLessonResponse;
 import com.elearn.app.elearnapi.apis.Front.Course.DTO.FrontLessonResponse;
+import com.elearn.app.elearnapi.config.constants.AssetType;
 import com.elearn.app.elearnapi.errors.HTTPServerError;
 import com.elearn.app.elearnapi.modules.Asset.Asset;
 import com.elearn.app.elearnapi.modules.Asset.AssetService;
@@ -66,6 +67,14 @@ public class LessonService {
         return lesson;
     }
 
+    public List<Lesson> getAllLessonsForCourse(Course course) {
+        return course.getLessons();
+    }
+
+    public List<Lesson> getPublishedLessonsForCourse(Course course) {
+        return this.lessonRepository.findPublishedLessonsForCourse(course);
+    }
+
     public List<Lesson> findByAssetVideo(Asset video) {
         return this.lessonRepository.findByVideo(video);
     }
@@ -75,6 +84,7 @@ public class LessonService {
         List<Lesson> lessons = course.getLessons();
         int number = lessons.size() + 1;
         Asset video = this.assetService.checkGetOneById(assetId);
+        this.assetService.checkTypeOfAsset(video, AssetType.VIDEO);
         Lesson lesson = new Lesson(number, title, description, video, course);
         lesson = this.save(lesson);
         return lesson;
@@ -85,8 +95,10 @@ public class LessonService {
             String description,
             String assetId) {
 
-        Asset video = this.assetService.checkGetOneById(assetId);
         Lesson lesson = this.checkGetOneByIdInCourse(id, course);
+
+        Asset video = this.assetService.checkGetOneById(assetId);
+        this.assetService.checkTypeOfAsset(video, AssetType.VIDEO);
 
         lesson.setTitle(title);
         lesson.setDescription(description);
@@ -97,8 +109,21 @@ public class LessonService {
         return lesson;
     }
 
+    public void checkCanBePublished(Lesson lesson) {
+        if (lesson.getVideo() == null) {
+            throw new HTTPServerError(HttpStatus.BAD_REQUEST,
+                    String.format("lesson with id %s can't be published because there is no video for it",
+                            lesson.getId() + ""));
+        }
+
+    }
+
     public Lesson toggleIsPublish(String id, Course course) {
         Lesson lesson = this.checkGetOneByIdInCourse(id, course);
+        if (!lesson.getIsPublished()) {
+            this.checkCanBePublished(lesson);
+
+        }
         lesson.setIsPublished(!lesson.getIsPublished());
         lesson = this.save(lesson);
         return lesson;
@@ -142,20 +167,22 @@ public class LessonService {
         return lessonsResponse;
     }
 
-    public FrontLessonResponse makeFrontLessonResponse(Lesson lesson, Course course, User user) {
+    public FrontLessonResponse makeFrontLessonResponse(Lesson lesson, Course course, User user, int number) {
         Boolean isPurchased = false;
         if (user != null) {
             isPurchased = this.userPurchasedCourseService.isCoursePurchasedByUser(user, course);
         }
         AssetResponse video = this.assetService.makeAssetResponse(lesson.getVideo());
-        return new FrontLessonResponse(lesson, video, isPurchased);
+        return new FrontLessonResponse(lesson, video, isPurchased, number);
     }
 
     public List<FrontLessonResponse> makeFrontLessonsResponse(List<Lesson> lessons, Course course, User user) {
         List<FrontLessonResponse> lessonsResponse = new LinkedList<>();
 
         for (int i = 0; i < lessons.size(); i++) {
-            FrontLessonResponse frontLessonResponse = this.makeFrontLessonResponse(lessons.get(i), course, user);
+            int number = i + 1;
+            FrontLessonResponse frontLessonResponse = this.makeFrontLessonResponse(lessons.get(i), course, user,
+                    number);
             lessonsResponse.add(frontLessonResponse);
         }
 

@@ -8,5 +8,7 @@ import com.elearn.app.elearnapi.modules.Asset.Asset;
 public interface CourseRepository extends CrudRepository<Course, String> {
     List<Course> findByTopics_Id(String topicId);
 
+    List<Course> findAllByIsPublished(Boolean isPublished);
+
     List<Course> findByImage(Asset image);
 }

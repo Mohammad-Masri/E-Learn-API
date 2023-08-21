@@ -3,6 +3,7 @@ package com.elearn.app.elearnapi.apis.Dashboard.Course.DTO;
 import java.util.List;
 
 import com.elearn.app.elearnapi.apis.Dashboard.Topic.DTO.DashboardTopicResponse;
+import com.elearn.app.elearnapi.modules.Asset.DTO.AssetResponse;
 import com.elearn.app.elearnapi.modules.Course.Course;
 
 public class DashboardCourseResponse extends DashboardCourseInListResponse {
@@ -15,8 +16,8 @@ public class DashboardCourseResponse extends DashboardCourseInListResponse {
     }
 
     public DashboardCourseResponse(Course course, List<DashboardTopicResponse> topics,
-            List<DashboardLessonResponse> lessons) {
-        super(course);
+            List<DashboardLessonResponse> lessons, AssetResponse asset) {
+        super(course, asset);
         this.topics = topics;
         this.lessons = lessons;
     }

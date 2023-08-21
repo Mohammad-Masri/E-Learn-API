@@ -44,7 +44,7 @@ public class FrontCourseController {
     public List<FrontCourseInListResponse> getAllCourses(HttpServletRequest request) {
         String id = (String) request.getAttribute("id");
         User user = this.userService.findById(id);
-        List<Course> courses = this.courseService.getAll();
+        List<Course> courses = this.courseService.getAllIsPublished();
         List<FrontCourseInListResponse> courseResponses = this.courseService
                 .makeFrontCoursesInListResponse(user, courses);
         return courseResponses;
@@ -85,7 +85,7 @@ public class FrontCourseController {
         String id = (String) request.getAttribute("id");
         User user = this.userService.checkFindById(id);
 
-        Course course = this.courseService.checkGetOneById(courseId);
+        Course course = this.courseService.checkGetOneByIdForFront(courseId);
 
         this.userPurchasedCourseService.checkIsUserAlreadyPayThisCourse(user, course);
 
