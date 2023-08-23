@@ -36,6 +36,8 @@ public class Course {
     private Boolean isPublished;
     private Boolean isFeatured;
 
+    private int enrollmentCount;
+
     @OneToOne
     @JoinColumn(name = "asset_id")
     private Asset image;
@@ -72,6 +74,7 @@ public class Course {
         this.image = image;
         this.isPublished = false;
         this.isFeatured = false;
+        this.enrollmentCount = 0;
     }
 
     public Long getId() {
@@ -104,6 +107,14 @@ public class Course {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public int getEnrollmentCount() {
+        return enrollmentCount;
+    }
+
+    public void setEnrollmentCount(int enrollmentCount) {
+        this.enrollmentCount = enrollmentCount;
     }
 
     public Set<Topic> getTopics() {

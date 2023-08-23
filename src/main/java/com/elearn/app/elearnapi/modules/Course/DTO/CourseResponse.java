@@ -10,6 +10,7 @@ public abstract class CourseResponse {
     private String description;
     private Double price;
     private Boolean isFeatured;
+    private int enrollmentCount;
     private AssetResponse image;
 
     public CourseResponse() {
@@ -21,6 +22,7 @@ public abstract class CourseResponse {
         this.id = course.getId();
         this.title = course.getTitle();
         this.price = course.getPrice();
+        this.enrollmentCount = course.getEnrollmentCount();
         this.description = course.getDescription();
         this.isFeatured = course.getIsFeatured();
         this.image = image;
@@ -56,6 +58,14 @@ public abstract class CourseResponse {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getEnrollmentCount() {
+        return enrollmentCount;
+    }
+
+    public void setEnrollmentCount(int enrollmentCount) {
+        this.enrollmentCount = enrollmentCount;
     }
 
     public Boolean getIsFeatured() {

@@ -15,13 +15,10 @@ import com.elearn.app.elearnapi.apis.Front.Course.DTO.FrontCourseResponse;
 import com.elearn.app.elearnapi.modules.BooleanResponse;
 import com.elearn.app.elearnapi.modules.Course.Course;
 import com.elearn.app.elearnapi.modules.Course.CourseService;
-import com.elearn.app.elearnapi.modules.PaymentTransaction.PaymentTransaction;
-import com.elearn.app.elearnapi.modules.PaymentTransaction.PaymentTransactionService;
 import com.elearn.app.elearnapi.modules.User.User;
 import com.elearn.app.elearnapi.modules.User.UserService;
 import com.elearn.app.elearnapi.modules.UserFavoriteCourse.UserFavoriteCourse;
 import com.elearn.app.elearnapi.modules.UserFavoriteCourse.UserFavoriteCourseService;
-import com.elearn.app.elearnapi.modules.UserPurchasedCourse.UserPurchasedCourseService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -33,10 +30,6 @@ public class FrontCourseController {
     private CourseService courseService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private PaymentTransactionService paymentTransactionService;
-    @Autowired
-    private UserPurchasedCourseService userPurchasedCourseService;
     @Autowired
     private UserFavoriteCourseService userFavoriteCourseService;
 
@@ -87,11 +80,7 @@ public class FrontCourseController {
 
         Course course = this.courseService.checkGetOneByIdForFront(courseId);
 
-        this.userPurchasedCourseService.checkIsUserAlreadyPayThisCourse(user, course);
-
-        PaymentTransaction transaction = this.paymentTransactionService.create(course);
-
-        this.userPurchasedCourseService.create(user, course, transaction);
+        this.courseService.userPayCourse(user, course);
 
         return new BooleanResponse(true);
     }

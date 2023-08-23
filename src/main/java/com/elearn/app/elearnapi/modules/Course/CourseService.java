@@ -25,6 +25,8 @@ import com.elearn.app.elearnapi.modules.Asset.DTO.AssetResponse;
 import com.elearn.app.elearnapi.modules.CourseTopic.CourseTopicService;
 import com.elearn.app.elearnapi.modules.Lesson.Lesson;
 import com.elearn.app.elearnapi.modules.Lesson.LessonService;
+import com.elearn.app.elearnapi.modules.PaymentTransaction.PaymentTransaction;
+import com.elearn.app.elearnapi.modules.PaymentTransaction.PaymentTransactionService;
 import com.elearn.app.elearnapi.modules.Topic.Topic;
 import com.elearn.app.elearnapi.modules.Topic.TopicService;
 import com.elearn.app.elearnapi.modules.User.User;
@@ -50,6 +52,8 @@ public class CourseService {
     private LessonService lessonService;
     @Autowired
     private AssetService assetService;
+    @Autowired
+    private PaymentTransactionService paymentTransactionService;
 
     @Autowired
     private UserPurchasedCourseService userPurchasedCourseService;
@@ -250,5 +254,16 @@ public class CourseService {
         }
 
         return coursesResponse;
+    }
+
+    public void userPayCourse(User user, Course course) {
+        this.userPurchasedCourseService.checkIsUserAlreadyPayThisCourse(user, course);
+
+        PaymentTransaction transaction = this.paymentTransactionService.create(course);
+
+        this.userPurchasedCourseService.create(user, course, transaction);
+
+        course.setEnrollmentCount(course.getEnrollmentCount() + 1);
+        this.save(course);
     }
 }
